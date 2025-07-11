@@ -1,13 +1,17 @@
 import { Component } from 'react';
-
-class Button extends Component {
+type ButtonProps = {
+  onClick: () => void;
+  text: string;
+};
+class Button extends Component<ButtonProps> {
   render() {
     return (
       <button
+        onClick={this.props.onClick}
         className="px-5 py-2 bg-[#1c1e45]
       text-white font-semibold rounded-md shadow-md hover:bg-[#61637d] transition-colors duration-300 hover:cursor-pointer"
       >
-        search
+        {this.props.text}
       </button>
     );
   }
