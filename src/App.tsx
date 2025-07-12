@@ -9,12 +9,11 @@ class App extends Component {
   state: {
     planets: PlanetProps[];
     isLoading: boolean;
-    foundPlanets: PlanetProps[];
   } = {
     planets: [],
     isLoading: true,
-    foundPlanets: [],
   };
+
   async componentDidMount() {
     try {
       const resp = await getAllPlanets();
@@ -26,8 +25,8 @@ class App extends Component {
     }
   }
 
-  setFoundPlanet = (planetsRes: PlanetProps[]) => {
-    this.setState({ foundPlanets: planetsRes });
+  setPlanet = (planetsRes: PlanetProps[]) => {
+    this.setState({ planets: planetsRes });
   };
   setIsLoading = (value: boolean) => {
     this.setState({ isLoading: value });
@@ -35,18 +34,8 @@ class App extends Component {
   render() {
     return (
       <div className="">
-        <Search
-          onSearch={this.setFoundPlanet}
-          setIsLoading={this.setIsLoading}
-        />
-        <Result
-          planets={
-            this.state.foundPlanets.length > 0
-              ? this.state.foundPlanets
-              : this.state.planets
-          }
-          isLoading={this.state.isLoading}
-        />
+        <Search onSearch={this.setPlanet} setIsLoading={this.setIsLoading} />
+        <Result planets={this.state.planets} isLoading={this.state.isLoading} />
       </div>
     );
   }

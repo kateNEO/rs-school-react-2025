@@ -7,9 +7,13 @@ type ResultProps = {
 };
 
 class Result extends Component<ResultProps> {
+  state = { error: false };
   render() {
     const { planets, isLoading } = this.props;
     if (isLoading) return <p className="text-gray-500">Loading...</p>;
+    if (this.state.error) {
+      throw new Error('I broke down!');
+    }
     return (
       <div>
         <div className="flex justify-start items-center flex-wrap gap-[4.9vw] py-5">
@@ -25,11 +29,12 @@ class Result extends Component<ResultProps> {
             />
           ))}
         </div>
-        <Button onClick={error} text="Error Button" />
+        <Button
+          onClick={() => this.setState({ error: true })}
+          text="Error Button"
+        />
       </div>
     );
   }
 }
 export default Result;
-
-function error() {}

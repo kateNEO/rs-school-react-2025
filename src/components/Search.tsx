@@ -13,7 +13,7 @@ class Search extends Component<SearchProps> {
   handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ searchStr: e.target.value });
   };
-  handleClick = async () => {
+  handleClickSearch = async () => {
     this.props.setIsLoading(true);
     try {
       const data = await searchPlanet(this.state.searchStr);
@@ -36,11 +36,11 @@ class Search extends Component<SearchProps> {
           onChange={this.handleSearchChange}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
-              this.handleClick();
+              this.handleClickSearch();
             }
           }}
         />
-        <Button text="search" onClick={this.handleClick} />
+        <Button text="search" onClick={this.handleClickSearch} />
       </div>
     );
   }
