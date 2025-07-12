@@ -1,20 +1,27 @@
 import React, { Component } from 'react';
 import Button from './Button.tsx';
 import { searchPlanet } from '../services/searchPlanet.ts';
-
-class Search extends Component {
+import type { PlanetProps } from './Planet.tsx';
+type SearchProps = {
+  onSearch: (planet: PlanetProps[]) => void;
+  setIsLoading: (value: boolean) => void;
+};
+class Search extends Component<SearchProps> {
   state = {
     searchStr: '',
   };
   handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ searchStr: e.target.value });
-    console.log(this.state.searchStr);
   };
   handleClick = async () => {
+    this.props.setIsLoading(true);
     try {
       const data = await searchPlanet(this.state.searchStr);
-      console.log(data);
-      this.setState({ data });
+      if (data && 'results' in data) {
+        this.setState(data.results);
+        this.props.onSearch(data.results);
+      }
+      this.props.setIsLoading(false);
     } catch (error) {
       console.error(error);
     }
@@ -27,6 +34,11 @@ class Search extends Component {
           className="border border-[#9F9F9F] text-white w-full h-10 rounded-[7px] p-4 hover:cursor-pointer"
           placeholder="Tatooine"
           onChange={this.handleSearchChange}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              this.handleClick();
+            }
+          }}
         />
         <Button text="search" onClick={this.handleClick} />
       </div>

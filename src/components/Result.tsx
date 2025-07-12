@@ -9,7 +9,6 @@ type ResultProps = {
 class Result extends Component<ResultProps> {
   render() {
     const { planets, isLoading } = this.props;
-    console.log(planets);
     if (isLoading) return <p className="text-gray-500">Loading...</p>;
     return (
       <div>
