@@ -1,6 +1,6 @@
 import { Component } from 'react';
 
-type PlanetProps = {
+export type PlanetProps = {
   name: string;
   climate: string;
   terrain: string;
@@ -14,11 +14,17 @@ class Planet extends Component<PlanetProps> {
     const { name, climate, terrain, population, diameter, gravity } =
       this.props;
     return (
-      <div className=" w-60 h-90 flex flex-col items-center justify-center border border-gray-200 rounded-md">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+      <div
+        className=" w-60 h-85 flex px-3 flex-col items-center justify-center border border-gray-200
+      rounded-md bg-[url(./images/red.jpg)] bg-cover hover:cursor-pointer hover:shadow-[0_4px_20px_#9ca3af] duration-500"
+      >
+        <h2 className="text-2xl drop-shadow-[1px_1px_0px_#FFF] font-bold text-gray-800 dark:text-white mb-2">
           {name}
         </h2>
-        <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1 bg-gray-100 bg-opacity-50 rounded-md p-6">
+        <div
+          className="bg-gray-100/50 w-full text-sm text-gray-600 dark:text-gray-300 space-y-1 rounded-md p-6
+         hover:bg-blue-50 duration-500"
+        >
           <p>
             <span className="font-medium">Climate:</span> {climate}
           </p>
