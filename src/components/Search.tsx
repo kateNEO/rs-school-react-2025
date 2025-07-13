@@ -42,7 +42,11 @@ class Search extends Component<SearchProps> {
             }
           }}
         />
-        <Button text="search" onClick={this.handleClickSearch} />
+        <Button
+          text="search"
+          onClick={this.handleClickSearch}
+          disabled={false}
+        />
       </div>
     );
   }

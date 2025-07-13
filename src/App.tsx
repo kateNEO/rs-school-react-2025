@@ -34,6 +34,8 @@ class App extends Component {
     initialPlanetsDisplay(this.setResponse, this.setIsLoading, this.setError);
   }
   render() {
+    if (!this.state.responseState)
+      return <p className="text-gray-500">Something wrong</p>;
     console.log(this.state.error);
     return (
       <div className="">
@@ -42,6 +44,7 @@ class App extends Component {
           response={this.state.responseState}
           isLoading={this.state.isLoading}
           error={this.state.error}
+          setIsLoading={this.setIsLoading}
         />
       </div>
     );
