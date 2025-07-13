@@ -9,7 +9,7 @@ class Button extends Component<ButtonProps> {
       <button
         onClick={this.props.onClick}
         className="px-5 py-2 bg-[#1c1e45]
-      text-white font-semibold rounded-md shadow-md hover:bg-[#61637d] transition-colors duration-300 hover:cursor-pointer"
+      text-white font-semibold rounded-md shadow-md hover:shadow-[0_4px_20px_#9ca3af] duration-300 hover:cursor-pointer"
       >
         {this.props.text}
       </button>

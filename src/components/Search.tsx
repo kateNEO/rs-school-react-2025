@@ -18,6 +18,7 @@ class Search extends Component<SearchProps> {
     this.props.setIsLoading(true); // this.props.setter ({planet: , login: })
     try {
       const data = await searchPlanet(this.state.searchStr);
+      console.log(data);
       saveToLocalStorage(this.state.searchStr);
       if (data && 'results' in data) {
         this.setState(data.results);
@@ -33,7 +34,7 @@ class Search extends Component<SearchProps> {
       <div className="w-1/1 h-40 flex justify-between items-center gap-8">
         <input
           type="text"
-          className="border border-[#9F9F9F] text-white w-full h-10 rounded-[7px] p-4 hover:cursor-pointer"
+          className="border border-[#9F9F9F] text-white w-full h-10 rounded-[7px] p-4 hover:cursor-pointer hover:shadow-[0_4px_20px_#9ca3af] duration-300"
           placeholder="Tatooine"
           onChange={this.handleSearchChange}
           onKeyDown={(e) => {
