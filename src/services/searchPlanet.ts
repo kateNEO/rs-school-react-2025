@@ -4,7 +4,5 @@ export async function searchPlanet(planet: string) {
     `https://swapi.dev/api/planets//?search=${planet}`
   );
   if (!response.ok) throw new Error('Error with load');
-  const res = await response.json();
-  console.log(res);
-  return res;
+  return await response.json();
 }

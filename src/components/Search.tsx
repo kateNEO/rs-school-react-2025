@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import Button from './Button.tsx';
 import { searchPlanet } from '../services/searchPlanet.ts';
-import type { PlanetProps } from './Planet.tsx';
 import { saveToLocalStorage } from '../services/saveToLocalStorage.ts';
+import type { Response } from '../App.tsx';
 type SearchProps = {
-  onSearch: (planet: PlanetProps[]) => void;
+  onSearch: (response: Response) => void;
   setIsLoading: (value: boolean) => void;
 };
 class Search extends Component<SearchProps> {
@@ -18,11 +18,10 @@ class Search extends Component<SearchProps> {
     this.props.setIsLoading(true); // this.props.setter ({planet: , login: })
     try {
       const data = await searchPlanet(this.state.searchStr);
-      console.log(data);
       saveToLocalStorage(this.state.searchStr);
       if (data && 'results' in data) {
         this.setState(data.results);
-        this.props.onSearch(data.results);
+        this.props.onSearch(data);
       }
       this.props.setIsLoading(false);
     } catch (error) {
