@@ -1,9 +1,9 @@
 import './App.css';
 import Search from './components/Search.tsx';
 import Result from './components/Result.tsx';
-import { getAllPlanets } from './services/getAllPlanets.ts';
 import { Component } from 'react';
 import type { PlanetProps } from './components/Planet.tsx';
+import { initialPlanetsDisplay } from './services/initialPlanetsDisplay.ts';
 
 class App extends Component {
   state: {
@@ -13,24 +13,17 @@ class App extends Component {
     planets: [],
     isLoading: true,
   };
-
-  async componentDidMount() {
-    try {
-      const resp = await getAllPlanets();
-      if (resp && 'results' in resp) {
-        this.setState({ planets: resp.results, isLoading: false });
-      }
-    } catch (error) {
-      console.error('Ошибка:', error);
-    }
-  }
-
   setPlanet = (planetsRes: PlanetProps[]) => {
     this.setState({ planets: planetsRes });
   };
   setIsLoading = (value: boolean) => {
     this.setState({ isLoading: value });
   };
+
+  componentDidMount() {
+    initialPlanetsDisplay(this.setPlanet, this.setIsLoading);
+  }
+
   render() {
     return (
       <div className="">

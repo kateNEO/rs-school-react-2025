@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { images, randomImages } from '../services/randomImages.ts';
 
 export type PlanetProps = {
   name: string;
@@ -15,8 +16,8 @@ class Planet extends Component<PlanetProps> {
       this.props;
     return (
       <div
-        className=" w-60 h-85 flex px-3 flex-col items-center justify-center border border-gray-200
-      rounded-md bg-[url(./images/red.jpg)] bg-cover hover:cursor-pointer hover:shadow-[0_4px_20px_#9ca3af] duration-500"
+        className={`w-60 h-85 flex ${randomImages(images)} px-3 flex-col items-center justify-center border border-gray-200
+          rounded-md bg-cover hover:cursor-pointer hover:shadow-[0_4px_20px_#9ca3af] duration-500`}
       >
         <h2 className="text-2xl drop-shadow-[1px_1px_0px_#FFF] font-bold text-gray-800 dark:text-white mb-2">
           {name}
