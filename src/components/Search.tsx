@@ -11,6 +11,13 @@ class Search extends Component<SearchProps> {
   state = {
     searchStr: '',
   };
+  componentDidMount() {
+    const saved = localStorage.getItem('lastRequest');
+    if (saved) {
+      console.log(saved);
+      this.setState({ searchStr: saved });
+    }
+  }
   handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ searchStr: e.target.value });
   };
@@ -33,6 +40,7 @@ class Search extends Component<SearchProps> {
       <div className="w-1/1 h-40 flex justify-between items-center gap-8">
         <input
           type="text"
+          value={this.state.searchStr}
           className="border border-[#9F9F9F] text-white w-full h-10 rounded-[7px] p-4 hover:cursor-pointer hover:shadow-[0_4px_20px_#9ca3af] duration-300"
           placeholder="Tatooine"
           onChange={this.handleSearchChange}
