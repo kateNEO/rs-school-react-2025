@@ -2,7 +2,6 @@ import { Component } from 'react';
 import Planet, { type PlanetProps } from './Planet.tsx';
 import Button from './Button.tsx';
 import type { Response } from '../App.tsx';
-import Pagination from './Pagination.tsx';
 type ResultProps = {
   response: Response;
   isLoading: boolean;
@@ -25,7 +24,7 @@ class Result extends Component<ResultProps> {
     if (!response) return <p className="text-gray-500">Something wrong</p>;
     return (
       <div className="flex flex-col gap-5">
-        <div className="flex justify-center items-center flex-wrap gap-[4.9vw] py-5 xl:justify-start">
+        <div className="flex justify-center items-center flex-wrap gap-[6vw] py-5 xl:justify-start">
           {response.count > 0 ? (
             response.results.map((planet: PlanetProps) => (
               <Planet
@@ -42,10 +41,6 @@ class Result extends Component<ResultProps> {
             <p className="text-gray-500">Not Found :( </p>
           )}
         </div>
-        <Pagination
-          responseObj={this.props.response}
-          setIsLoading={this.props.setIsLoading}
-        />
         <Button
           disabled={false}
           onClick={() => this.setState({ errorRender: true })}
