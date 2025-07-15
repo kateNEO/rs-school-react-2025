@@ -1,0 +1,8 @@
+#root {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+  background-color: #0a162b;
+  overflow: auto;
+}
