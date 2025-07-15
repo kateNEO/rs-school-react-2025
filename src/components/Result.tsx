@@ -3,7 +3,7 @@ import Planet, { type PlanetProps } from './Planet.tsx';
 import Button from './Button.tsx';
 import type { Response } from '../App.tsx';
 type ResultProps = {
-  response: Response;
+  response: Response | null;
   isLoading: boolean;
   error: string | null;
   setIsLoading: (value: boolean) => void;
@@ -24,9 +24,9 @@ class Result extends Component<ResultProps> {
     if (!response) return <p className="text-gray-500">Something wrong</p>;
     return (
       <div className="flex flex-col gap-5">
-        <div className="flex justify-center items-center flex-wrap gap-[6vw] py-5 xl:justify-start">
-          {response.count > 0 ? (
-            response.results.map((planet: PlanetProps) => (
+        <div className="flex justify-center items-center flex-wrap gap-[2vw] py-5">
+          {response.total_records > 0 ? (
+            response.result.map((planet: PlanetProps) => (
               <Planet
                 key={planet.name}
                 name={planet.name}

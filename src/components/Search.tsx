@@ -3,6 +3,7 @@ import Button from './Button.tsx';
 import { searchPlanet } from '../services/searchPlanet.ts';
 import { saveToLocalStorage } from '../services/saveToLocalStorage.ts';
 import type { Response } from '../App.tsx';
+import { getAllPlanets } from '../services/getAllPlanets.ts';
 type SearchProps = {
   onSearch: (response: Response) => void;
   setIsLoading: (value: boolean) => void;
@@ -22,14 +23,20 @@ class Search extends Component<SearchProps> {
     this.setState({ searchStr: e.target.value });
   };
   handleClickSearch = async () => {
-    this.props.setIsLoading(true); // this.props.setter ({planet: , login: })
+    this.props.setIsLoading(true);
+    this.props.setIsLoading(true);
     try {
-      const data = await searchPlanet(this.state.searchStr);
-      saveToLocalStorage(this.state.searchStr);
-      if (data && 'results' in data) {
-        this.setState(data.results);
-        this.props.onSearch(data);
+      let data;
+      if (this.state.searchStr === '') {
+        data = await getAllPlanets();
+      } else {
+        data = await searchPlanet(this.state.searchStr);
+        saveToLocalStorage(this.state.searchStr);
       }
+
+      this.props.onSearch(data);
+      console.log(data.result);
+
       this.props.setIsLoading(false);
     } catch (error) {
       console.error(error);

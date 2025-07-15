@@ -2,14 +2,15 @@ import './App.css';
 import Search from './components/Search.tsx';
 import Result from './components/Result.tsx';
 import { Component } from 'react';
-import type { PlanetProps } from './components/Planet.tsx';
 import { initialPlanetsDisplay } from './services/initialPlanetsDisplay.ts';
+import type { PlanetProps } from './components/Planet.tsx';
 
 export type Response = {
-  count: number;
+  total_records: number;
   next: string | null;
   previous: string | null;
-  results: PlanetProps[];
+  total_pages: number;
+  result: PlanetProps[];
 };
 class App extends Component {
   state: {
@@ -34,11 +35,8 @@ class App extends Component {
     initialPlanetsDisplay(this.setResponse, this.setIsLoading, this.setError);
   }
   render() {
-    if (!this.state.responseState)
-      return <p className="text-gray-500">Something wrong</p>;
-    console.log(this.state.error);
     return (
-      <div className="">
+      <div className="px-5">
         <Search onSearch={this.setResponse} setIsLoading={this.setIsLoading} />
         <Result
           response={this.state.responseState}
