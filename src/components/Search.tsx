@@ -24,7 +24,6 @@ class Search extends Component<SearchProps> {
   };
   handleClickSearch = async () => {
     this.props.setIsLoading(true);
-    this.props.setIsLoading(true);
     try {
       let data;
       if (this.state.searchStr === '') {
