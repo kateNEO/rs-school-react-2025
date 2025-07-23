@@ -8,6 +8,7 @@ export type PlanetProps = {
   population: string;
   diameter: string;
   gravity: string;
+  url: string;
 };
 
 class Planet extends Component<PlanetProps> {

@@ -1,5 +1,5 @@
 import type { PlanetProps } from '../components/Planet.tsx';
-import type { Response } from '../App.tsx';
+import type { PlanetList, Response } from '../App.tsx';
 
 export async function searchPlanet(name: string): Promise<Response> {
   const res = await fetch(
@@ -7,14 +7,18 @@ export async function searchPlanet(name: string): Promise<Response> {
   );
   if (!res.ok) throw new Error('Search request failed');
   const data = await res.json();
+  console.log(data);
   if (!Array.isArray(data.result)) {
     throw new Error('Unexpected result structure');
   }
-  const result: PlanetProps[] = data.result.map(
-    (item: { properties: PlanetProps }) => item.properties
+  const result: PlanetList[] = data.result.map(
+    (item: { properties: PlanetProps }) => {
+      const { name, url } = item.properties;
+      return { name, url };
+    }
   );
   return {
-    total_records: result.length,
+    total_records: data.result.length,
     total_pages: 1,
     next: null,
     previous: null,

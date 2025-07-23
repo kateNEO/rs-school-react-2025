@@ -25,12 +25,12 @@ class Result extends Component<ResultProps> {
     return (
       <div className="flex flex-col gap-5">
         <div className="flex justify-between">
-          <div className="flex flex-wrap gap-[2vw] py-5">
+          <div className="flex flex-wrap justify-start gap-[2vw] py-3">
             {response.total_records > 0 ? (
               response.result.map((planet: PlanetList) => (
                 <div
                   key={planet.name}
-                  className="text-white h-10
+                  className="px-2 text-white h-10
                    hover:cursor-pointer"
                 >
                   <div className="flex items-center gap-2 px-6 py-1">
