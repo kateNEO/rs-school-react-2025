@@ -15,7 +15,6 @@ describe('ErrorBoundary', () => {
           }}
           isLoading={false}
           error={null}
-          setIsLoading={() => {}}
         />
       </ErrorBoundary>
     );

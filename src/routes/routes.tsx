@@ -3,6 +3,7 @@ import { ROUTES } from './paths.ts';
 import { createBrowserRouter } from 'react-router-dom';
 import MainPage from '../components/MainPage.tsx';
 import ErrorBoundary from '../components/ErrorBoundary.tsx';
+import NotFound from '../components/NotFound.tsx';
 
 const router = createBrowserRouter(
   [
@@ -25,17 +26,17 @@ const router = createBrowserRouter(
           index: true,
           element: <MainPage />,
         },
-        {
-          path: 'planet/:id',
-          // element: <Planet />,
-        },
+        // {
+        //   path: 'planet/:id',
+        //   // element: <Planet />,
+        // },
         {
           path: ROUTES.ABOUT,
           // element: <About />,
         },
         {
           path: ROUTES.NOT_FOUND,
-          element: <>404</>,
+          element: <NotFound />,
         },
       ],
     },

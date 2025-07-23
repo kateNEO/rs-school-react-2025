@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { initialPlanetsDisplay } from '../services/initialPlanetsDisplay.ts';
-import { Link, Outlet } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Search from './Search.tsx';
 import Result from './Result.tsx';
 
@@ -31,13 +31,7 @@ function MainPage() {
         About
       </Link>
       <Search onSearch={setResponseState} setIsLoading={setIsLoading} />
-      <Outlet />
-      <Result
-        response={responseState}
-        isLoading={isLoading}
-        error={error}
-        setIsLoading={setIsLoading}
-      />
+      <Result response={responseState} isLoading={isLoading} error={error} />
     </div>
   );
 }
