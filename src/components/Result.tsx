@@ -1,7 +1,6 @@
 import { Component } from 'react';
-import Planet, { type PlanetProps } from './Planet.tsx';
 import Button from './Button.tsx';
-import type { Response } from '../App.tsx';
+import type { PlanetList, Response } from '../App.tsx';
 type ResultProps = {
   response: Response | null;
   isLoading: boolean;
@@ -15,6 +14,7 @@ class Result extends Component<ResultProps> {
   };
   render() {
     const { response, isLoading } = this.props;
+    console.log(response);
     if (this.state.errorRender) {
       throw new Error('I broke down!');
     }
@@ -24,22 +24,40 @@ class Result extends Component<ResultProps> {
     if (!response) return <p className="text-gray-500">Something wrong</p>;
     return (
       <div className="flex flex-col gap-5">
-        <div className="flex justify-center items-center flex-wrap gap-[2vw] py-5">
-          {response.total_records > 0 ? (
-            response.result.map((planet: PlanetProps) => (
-              <Planet
-                key={planet.name}
-                name={planet.name}
-                climate={planet.climate}
-                diameter={planet.diameter}
-                gravity={planet.gravity}
-                population={planet.population}
-                terrain={planet.terrain}
-              />
-            ))
-          ) : (
-            <p className="text-gray-500">Not Found :( </p>
-          )}
+        <div className="flex justify-between">
+          <div className="flex flex-wrap gap-[2vw] py-5">
+            {response.total_records > 0 ? (
+              response.result.map((planet: PlanetList) => (
+                <div
+                  key={planet.name}
+                  className="text-white h-10
+                   hover:cursor-pointer"
+                >
+                  <div className="flex items-center gap-2 px-6 py-1">
+                    <span>🪐</span>
+                    <h2
+                      className="text-2xl drop-shadow-[1px_1px_1px_#FFF] font-bold text-gray-700 mb-0 duration-300
+                    hover:drop-shadow-[1px_1px_2px_#FFF]"
+                    >
+                      {planet.name}
+                    </h2>
+                  </div>
+                </div>
+
+                // <Planet
+                //   key={planet.name}
+                //   name={planet.name}
+                //   climate={planet.climate}
+                //   diameter={planet.diameter}
+                //   gravity={planet.gravity}
+                //   population={planet.population}
+                //   terrain={planet.terrain}
+              ))
+            ) : (
+              <p className="text-gray-500">Not Found :( </p>
+            )}
+          </div>
+          <div className="hidden w-60 h-20"></div>
         </div>
         <Button
           disabled={false}
@@ -50,4 +68,5 @@ class Result extends Component<ResultProps> {
     );
   }
 }
+
 export default Result;

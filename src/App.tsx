@@ -3,14 +3,17 @@ import Search from './components/Search.tsx';
 import Result from './components/Result.tsx';
 import { Component } from 'react';
 import { initialPlanetsDisplay } from './services/initialPlanetsDisplay.ts';
-import type { PlanetProps } from './components/Planet.tsx';
 
+export type PlanetList = {
+  name: string;
+  url: string;
+};
 export type Response = {
   total_records: number;
   next: string | null;
   previous: string | null;
   total_pages: number;
-  result: PlanetProps[];
+  result: PlanetList[];
 };
 class App extends Component {
   state: {
