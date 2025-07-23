@@ -1,4 +1,4 @@
-import type { PlanetList, Response } from '../App.tsx';
+import type { PlanetList, Response } from '../components/MainPage.tsx';
 
 interface ApiResponse {
   total_records: number;

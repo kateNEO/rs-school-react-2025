@@ -1,6 +1,6 @@
 import { getAllPlanets } from './getAllPlanets.ts';
 import { searchPlanet } from './searchPlanet.ts';
-import type { Response } from '../App.tsx';
+import type { Response } from '../components/MainPage.tsx';
 
 export async function initialPlanetsDisplay(
   setResp: (response: Response) => void,

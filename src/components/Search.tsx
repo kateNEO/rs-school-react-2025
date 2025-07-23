@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Button from './Button.tsx';
 import { searchPlanet } from '../services/searchPlanet.ts';
 import { saveToLocalStorage } from '../services/saveToLocalStorage.ts';
-import type { Response } from '../App.tsx';
+import type { Response } from './MainPage.tsx';
 import { getAllPlanets } from '../services/getAllPlanets.ts';
 type SearchProps = {
   onSearch: (response: Response) => void;
@@ -29,7 +29,7 @@ class Search extends Component<SearchProps> {
       if (this.state.searchStr === '') {
         data = await getAllPlanets();
       } else {
-        data = await searchPlanet(this.state.searchStr);
+        data = await searchPlanet(this.state.searchStr.trim());
         saveToLocalStorage(this.state.searchStr);
       }
 

@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import Button from './Button.tsx';
-import type { PlanetList, Response } from '../App.tsx';
+import type { PlanetList, Response } from './MainPage.tsx';
 type ResultProps = {
   response: Response | null;
   isLoading: boolean;

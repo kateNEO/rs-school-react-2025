@@ -1,5 +1,5 @@
 import type { PlanetProps } from '../components/Planet.tsx';
-import type { PlanetList, Response } from '../App.tsx';
+import type { PlanetList, Response } from '../components/MainPage.tsx';
 
 export async function searchPlanet(name: string): Promise<Response> {
   const res = await fetch(
