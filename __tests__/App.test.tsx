@@ -5,7 +5,7 @@ import * as dataLoader from '../src/services/initialPlanetsDisplay';
 
 describe('App component', () => {
   it('renders loading state on mount', () => {
-    vi.spyOn(dataLoader, 'initialPlanetsDisplay').mockImplementation(
+    vi.spyOn(dataLoader, 'initialBooksDisplay').mockImplementation(
       async (_, setIsLoading) => {
         setIsLoading(true);
       }

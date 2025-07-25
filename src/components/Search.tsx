@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Button from './Button.tsx';
-import { searchPlanet } from '../services/searchPlanet.ts';
 import { saveToLocalStorage } from '../services/saveToLocalStorage.ts';
 import type { Response } from './MainPage.tsx';
-import { getAllPlanets } from '../services/getAllPlanets.ts';
+import { getBooks } from '../services/getBooks.ts';
 
 type SearchProps = {
   onSearch: (response: Response) => void;
@@ -24,28 +23,22 @@ function Search({ onSearch, setIsLoading }: SearchProps) {
   const handleClickSearch = async () => {
     setIsLoading(true);
     try {
-      let data;
-      if (searchStr === '') {
-        data = await getAllPlanets();
-      } else {
-        data = await searchPlanet(searchStr.trim());
-        saveToLocalStorage(searchStr);
-      }
+      const data = await getBooks(searchStr);
+      saveToLocalStorage(searchStr);
       onSearch(data);
-      console.log(data.result);
-
+      console.log(data.docs);
       setIsLoading(false);
     } catch (error) {
       console.error(error);
     }
   };
   return (
-    <div className="w-1/1 h-40 flex justify-between items-center gap-8">
+    <div className="w-1/1 h-25 flex justify-between items-center gap-8">
       <input
         type="text"
         value={searchStr}
-        className="border border-[#9F9F9F] text-white w-full h-10 rounded-[7px] p-4 hover:cursor-pointer hover:shadow-[0_4px_20px_#9ca3af] duration-300"
-        placeholder="Tatooine"
+        className="border border-[#9F9F9F] text-white w-full h-10 rounded-[7px] p-4 hover:cursor-pointer hover:shadow-[0_4px_20px_#DDD] duration-300"
+        placeholder="Witcher"
         onChange={handleSearchChange}
         onKeyDown={(e) => {
           if (e.key === 'Enter') {
@@ -53,7 +46,7 @@ function Search({ onSearch, setIsLoading }: SearchProps) {
           }
         }}
       />
-      <Button text="search" onClick={handleClickSearch} disabled={false} />
+      <Button text="search" onClick={handleClickSearch} />
     </div>
   );
 }

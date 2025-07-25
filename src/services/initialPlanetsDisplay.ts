@@ -1,8 +1,7 @@
-import { getAllPlanets } from './getAllPlanets.ts';
-import { searchPlanet } from './searchPlanet.ts';
+import { getBooks } from './getBooks.ts';
 import type { Response } from '../components/MainPage.tsx';
 
-export async function initialPlanetsDisplay(
+export async function initialBooksDisplay(
   setResp: (response: Response) => void,
   setIsLoading: (value: boolean) => void,
   setError: (error: string) => void
@@ -11,18 +10,16 @@ export async function initialPlanetsDisplay(
   const lastRequest = data?.trim();
   try {
     let resp: Response;
-    if (!lastRequest) {
-      resp = await getAllPlanets();
+    if (lastRequest) {
+      resp = await getBooks(lastRequest);
     } else {
-      resp = await searchPlanet(lastRequest);
+      resp = await getBooks('the');
     }
-    if (resp) {
-      setResp(resp);
-      setIsLoading(false);
-    }
+    setResp(resp);
   } catch (error) {
     console.error('Error:', error);
-    setIsLoading(false);
     setError('Something wrong!');
+  } finally {
+    setIsLoading(false);
   }
 }

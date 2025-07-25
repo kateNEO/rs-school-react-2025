@@ -1,5 +1,5 @@
-import { initialPlanetsDisplay } from '../src/services/initialPlanetsDisplay';
-import * as getAllPlanetsModule from '../src/services/getAllPlanets';
+import { initialBooksDisplay } from '../src/services/initialPlanetsDisplay';
+import * as getAllPlanetsModule from '../src/services/getBooks';
 import * as searchPlanetModule from '../src/services/searchPlanet';
 
 describe('initialPlanetsDisplay', () => {
@@ -20,13 +20,11 @@ describe('initialPlanetsDisplay', () => {
       previous: null,
       result: [],
     };
-    vi.spyOn(getAllPlanetsModule, 'getAllPlanets').mockResolvedValue(
-      mockResponse
-    );
+    vi.spyOn(getAllPlanetsModule, 'getBooks').mockResolvedValue(mockResponse);
 
-    await initialPlanetsDisplay(setResp, setIsLoading, setError);
+    await initialBooksDisplay(setResp, setIsLoading, setError);
 
-    expect(getAllPlanetsModule.getAllPlanets).toHaveBeenCalled();
+    expect(getAllPlanetsModule.getBooks).toHaveBeenCalled();
     expect(setResp).toHaveBeenCalledWith(mockResponse);
     expect(setIsLoading).toHaveBeenCalledWith(false);
     expect(setError).not.toHaveBeenCalled();
@@ -45,7 +43,7 @@ describe('initialPlanetsDisplay', () => {
       mockResponse
     );
 
-    await initialPlanetsDisplay(setResp, setIsLoading, setError);
+    await initialBooksDisplay(setResp, setIsLoading, setError);
 
     expect(searchPlanetModule.searchPlanet).toHaveBeenCalledWith('Tatooine');
     expect(setResp).toHaveBeenCalledWith(mockResponse);
@@ -55,11 +53,11 @@ describe('initialPlanetsDisplay', () => {
 
   it('sets error on failure', async () => {
     vi.spyOn(Storage.prototype, 'getItem').mockReturnValue(null);
-    vi.spyOn(getAllPlanetsModule, 'getAllPlanets').mockRejectedValue(
+    vi.spyOn(getAllPlanetsModule, 'getBooks').mockRejectedValue(
       new Error('Failed')
     );
 
-    await initialPlanetsDisplay(setResp, setIsLoading, setError);
+    await initialBooksDisplay(setResp, setIsLoading, setError);
 
     expect(setResp).not.toHaveBeenCalled();
     expect(setIsLoading).toHaveBeenCalledWith(false);

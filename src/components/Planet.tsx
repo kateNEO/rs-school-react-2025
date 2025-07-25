@@ -1,5 +1,3 @@
-import { images, randomImages } from '../services/randomImages.ts';
-
 export type PlanetProps = {
   name: string;
   climate: string;
@@ -20,7 +18,7 @@ function Planet({
 }: PlanetProps) {
   return (
     <div
-      className={`w-60 h-85 flex ${randomImages(images)} px-3 flex-col items-center justify-center border border-gray-200
+      className={`w-60 h-85 flex px-3 flex-col items-center justify-center border border-gray-200
           rounded-md bg-cover hover:cursor-pointer hover:shadow-[0_4px_20px_#9ca3af] duration-500`}
     >
       <h2 className="text-2xl drop-shadow-[1px_1px_0px_#FFF] font-bold text-gray-800 mb-2">

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { getAllPlanets } from '../src/services/getAllPlanets';
+import { getBooks } from '../src/services/getBooks';
 import type { PlanetProps } from '../src/components/Planet.tsx';
 
 describe('getAllPlanets', () => {
@@ -45,7 +45,7 @@ describe('getAllPlanets', () => {
 
     global.fetch = fetchMock as unknown as typeof fetch;
 
-    const result = await getAllPlanets();
+    const result = await getBooks();
 
     expect(result.total_records).toBe(2);
     expect(result.result).toHaveLength(2);

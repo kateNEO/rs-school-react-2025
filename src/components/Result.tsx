@@ -1,43 +1,56 @@
-import type { PlanetList, Response } from './MainPage.tsx';
+import type { BooksList, Response } from './MainPage.tsx';
+import Pagination from './Pagination.tsx';
+import { LIMIT } from './const/const.ts';
+import { navigate } from '../services/navigation.ts';
 type ResultProps = {
-  response: Response | null;
-  isLoading: boolean;
+  response: Response;
   error: string | null;
+  setLoading: (isLoading: boolean) => void;
 };
 
-function Result({ response, isLoading, error }: ResultProps) {
-  console.log(response);
-  if (isLoading) return <p className="text-gray-500">Loading...</p>;
+function Result({ response, error /*setLoading*/ }: ResultProps) {
+  const total_pages = Math.ceil(response.numFound / LIMIT);
   if (error) return <p className="text-gray-500">{error}</p>;
-  if (!response) return <p className="text-gray-500">Something wrong</p>;
   return (
     <div className="flex flex-col gap-5">
-      <div className="flex justify-between">
-        <div className="flex flex-wrap justify-start gap-[2vw] py-3">
-          {response.total_records > 0 ? (
-            response.result.map((planet: PlanetList) => (
-              <div
-                key={planet.name}
-                className="px-2 text-white h-10
-                   hover:cursor-pointer"
-              >
-                <div className="flex items-center gap-2 px-6 py-1">
-                  <span>🪐</span>
-                  <h2
-                    className="text-2xl drop-shadow-[1px_1px_1px_#FFF] font-bold text-gray-700 mb-0 duration-300
-                    hover:drop-shadow-[1px_1px_2px_#FFF]"
-                  >
-                    {planet.name}
-                  </h2>
-                </div>
+      <div className="grid text-start grid-cols-2 gap-[2vw] max-w-[1440px] py-3 xl:grid-cols-3">
+        {response.numFound > 0 ? (
+          response.docs.map((book: BooksList) => (
+            <div
+              key={book.key}
+              className="mb-10 text-white text-start h-15
+                   hover:cursor-pointer group"
+            >
+              <div className="flex items-start gap-2">
+                <span className="py-1">📚</span>
+                <h2
+                  className="text-xl text-start drop-shadow-[1px_1px_1px_#AAA] font-bold text-gray-700 duration-300
+                    group-hover:drop-shadow-[1px_1px_2px_#FFF] md:text-2xl"
+                >
+                  {book.title}
+                </h2>
               </div>
-            ))
-          ) : (
-            <p className="text-gray-500">Not Found :( </p>
-          )}
-        </div>
-        <div className="hidden w-60 h-20"></div>
+              {book.author_name?.map((author: string, index: number) => (
+                <span
+                  key={index}
+                  className="text-sm drop-shadow-[1px_1px_1px_#AAA] font-bold text-gray-700
+                    duration-300 group-hover:drop-shadow-[1px_1px_2px_#FFF]"
+                >
+                  {author}
+                  {index < book.author_name.length - 1 && <span>, </span>}
+                </span>
+              ))}
+            </div>
+          ))
+        ) : (
+          <p className="text-gray-500">Not Found :( </p>
+        )}
       </div>
+      <div className="hidden w-60 h-20"></div>
+      <Pagination
+        totalPage={total_pages}
+        navigate={navigate} /*responseObj={response}*/
+      />
     </div>
   );
 }

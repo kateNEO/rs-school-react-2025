@@ -1,19 +1,18 @@
 import { useEffect, useState } from 'react';
-import { initialPlanetsDisplay } from '../services/initialPlanetsDisplay.ts';
+import { initialBooksDisplay } from '../services/initialPlanetsDisplay.ts';
 import { Link } from 'react-router-dom';
 import Search from './Search.tsx';
 import Result from './Result.tsx';
 
-export type PlanetList = {
-  name: string;
-  url: string;
+export type BooksList = {
+  key: string;
+  title: string;
+  author_name: string[];
 };
 export type Response = {
-  total_records: number;
-  next: string | null;
-  previous: string | null;
-  total_pages: number;
-  result: PlanetList[];
+  numFound: number;
+  currentPage: number;
+  docs: BooksList[];
 };
 
 function MainPage() {
@@ -22,16 +21,27 @@ function MainPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    initialPlanetsDisplay(setResponseState, setIsLoading, setError);
+    initialBooksDisplay(setResponseState, setIsLoading, setError);
   }, []);
-
+  console.log(responseState);
   return (
     <div className="px-5">
-      <Link to="/about" className="text-xl text-white">
+      <Link
+        to="/about"
+        className="text-xl font-bold text-gray-700 hover:drop-shadow-[1px_1px_2px_#FFF]"
+      >
         About
       </Link>
       <Search onSearch={setResponseState} setIsLoading={setIsLoading} />
-      <Result response={responseState} isLoading={isLoading} error={error} />
+      {isLoading || !responseState ? (
+        <p className="text-gray-500">Loading...</p>
+      ) : (
+        <Result
+          response={responseState}
+          error={error}
+          setLoading={setIsLoading}
+        />
+      )}
     </div>
   );
 }

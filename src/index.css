@@ -11,7 +11,8 @@ html,
 html {
   overflow: hidden;
   scroll-behavior: smooth;
-  background-image: url('./images/space.jpg');
+  background-position: center;
+  background-image: url('src/components/images/books-background.jpg');
   background-size: cover;
   background-repeat: no-repeat;
 }

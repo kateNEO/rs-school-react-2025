@@ -12,7 +12,7 @@ const router = createBrowserRouter(
       element: (
         <ErrorBoundary
           fallback={
-            <div className="text-gray-500">
+            <div className="text-red-500">
               It&apos;s okay. You need refresh page.
             </div>
           }
@@ -26,10 +26,6 @@ const router = createBrowserRouter(
           index: true,
           element: <MainPage />,
         },
-        // {
-        //   path: 'planet/:id',
-        //   // element: <Planet />,
-        // },
         {
           path: ROUTES.ABOUT,
           // element: <About />,
