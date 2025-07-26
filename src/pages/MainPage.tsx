@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { initialBooksDisplay } from '../services/initialBooksDisplay.ts';
-import { Link } from 'react-router-dom';
+
+import { Link, useSearchParams } from 'react-router-dom';
 import Search from '../components/Search.tsx';
 import Result from '../components/Result.tsx';
 import Pagination from '../components/Pagination.tsx';
-import { LIMIT } from '../components/const/const.ts';
+import { LIMIT, PAGE_DEFAULT } from '../components/const/const.ts';
+import { getBooks } from '../services/getBooks.ts';
 
 export type BooksList = {
   key: string;
@@ -17,13 +18,34 @@ export type Response = {
 };
 
 function MainPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const pageParam = Number(searchParams.get('page')) || PAGE_DEFAULT;
+
   const [responseState, setResponseState] = useState<Response | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  // const [currentPage, setCurrentPage] = useState<number>(1);
+  // useEffect(() => {
+  //   initialBooksDisplay(setResponseState, setIsLoading, setError);
+  // }, []);
+  const loadBooksForPage = async (page: number) => {
+    try {
+      setIsLoading(true);
+      const query = localStorage.getItem('lastRequest') || 'the';
+      const resp = await getBooks(query, page);
+      setResponseState(resp);
+    } catch (err) {
+      setError('Something went wrong');
+      console.log(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   useEffect(() => {
-    initialBooksDisplay(setResponseState, setIsLoading, setError);
-  }, []);
+    loadBooksForPage(pageParam);
+    setSearchParams({ page: String(pageParam) });
+  }, [pageParam, setSearchParams]);
+
   const total_pages = responseState
     ? Math.ceil(responseState.numFound / LIMIT)
     : 0;
@@ -39,7 +61,7 @@ function MainPage() {
       <Search
         onSearch={setResponseState}
         setIsLoading={setIsLoading}
-        setCurrentPage={setCurrentPage}
+        setCurrentPage={(page) => setSearchParams({ page: page.toString() })}
       />
       {isLoading || !responseState ? (
         <p className="text-gray-500">Loading...</p>
@@ -54,8 +76,10 @@ function MainPage() {
             totalPage={total_pages}
             setIsLoading={setIsLoading}
             setResponse={setResponseState}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
+            currentPage={Number(pageParam)}
+            setCurrentPage={(page) =>
+              setSearchParams({ page: page.toString() })
+            }
           />
         </>
       )}
