@@ -1,5 +1,5 @@
 import { getBooks } from './getBooks.ts';
-import type { Response } from '../components/MainPage.tsx';
+import type { Response } from '../pages/MainPage.tsx';
 import { PAGE_DEFAULT } from '../components/const/const.ts';
 
 export async function initialBooksDisplay(

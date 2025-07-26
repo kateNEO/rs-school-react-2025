@@ -1,4 +1,4 @@
-import type { Response } from '../components/MainPage.tsx';
+import type { Response } from '../pages/MainPage.tsx';
 import { LIMIT } from '../components/const/const.ts';
 
 export async function getBooks(

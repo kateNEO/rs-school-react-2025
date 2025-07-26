@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { initialBooksDisplay } from '../services/initialBooksDisplay.ts';
 import { Link } from 'react-router-dom';
-import Search from './Search.tsx';
-import Result from './Result.tsx';
-import Pagination from './Pagination.tsx';
-import { LIMIT } from './const/const.ts';
+import Search from '../components/Search.tsx';
+import Result from '../components/Result.tsx';
+import Pagination from '../components/Pagination.tsx';
+import { LIMIT } from '../components/const/const.ts';
 
 export type BooksList = {
   key: string;

@@ -1,4 +1,4 @@
-import type { BooksList, Response } from './MainPage.tsx';
+import type { BooksList, Response } from '../pages/MainPage.tsx';
 type ResultProps = {
   response: Response;
   error: string | null;

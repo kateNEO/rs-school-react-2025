@@ -1,5 +1,5 @@
 import Button from './Button.tsx';
-import type { Response } from './MainPage.tsx';
+import type { Response } from '../pages/MainPage.tsx';
 import { getBooks } from '../services/getBooks.ts';
 
 type PaginationProps = {
@@ -44,6 +44,7 @@ function Pagination({
           navigate(currentPage - 1);
           setCurrentPage(currentPage - 1);
         }}
+        type="button"
         text="←"
       />
       <span className="text-white px-5">
@@ -55,6 +56,7 @@ function Pagination({
           setCurrentPage(currentPage + 1);
         }}
         text="→"
+        type="button"
       />
     </div>
   );

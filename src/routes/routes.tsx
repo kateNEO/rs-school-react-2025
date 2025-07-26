@@ -1,10 +1,10 @@
 import App from '../App.tsx';
 import { ROUTES } from './paths.ts';
 import { createBrowserRouter } from 'react-router-dom';
-import MainPage from '../components/MainPage.tsx';
+import MainPage from '../pages/MainPage.tsx';
 import ErrorBoundary from '../components/ErrorBoundary.tsx';
-import NotFound from '../components/NotFound.tsx';
-import About from '../About.tsx';
+import NotFound from '../pages/NotFound.tsx';
+import About from '../pages/About.tsx';
 
 const router = createBrowserRouter(
   [

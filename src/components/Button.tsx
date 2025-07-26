@@ -1,6 +1,7 @@
 type ButtonProps = {
-  onClick: () => void;
+  onClick?: () => void;
   text: string;
+  type: string;
   disabled?: boolean;
 };
 function Button({ onClick, text, disabled = false }: ButtonProps) {
