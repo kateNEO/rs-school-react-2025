@@ -20,14 +20,10 @@ export type Response = {
 function MainPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const pageParam = Number(searchParams.get('page')) || PAGE_DEFAULT;
-
   const [responseState, setResponseState] = useState<Response | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  // const [currentPage, setCurrentPage] = useState<number>(1);
-  // useEffect(() => {
-  //   initialBooksDisplay(setResponseState, setIsLoading, setError);
-  // }, []);
+
   const loadBooksForPage = async (page: number) => {
     try {
       setIsLoading(true);

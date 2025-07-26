@@ -12,7 +12,7 @@ html {
   overflow: hidden;
   scroll-behavior: smooth;
   background-position: center;
-  background-image: url('src/components/images/books-background.jpg');
+  background-image: url('./components/images/books-background.jpg');
   background-size: cover;
   background-repeat: no-repeat;
 }

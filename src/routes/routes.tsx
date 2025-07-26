@@ -39,7 +39,7 @@ const router = createBrowserRouter(
     },
   ],
   {
-    basename: '/rs-school-react-2025',
+    basename: '/rs-school-react-2025/',
   }
 );
 
