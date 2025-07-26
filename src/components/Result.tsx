@@ -1,7 +1,4 @@
 import type { BooksList, Response } from './MainPage.tsx';
-import Pagination from './Pagination.tsx';
-import { LIMIT } from './const/const.ts';
-import { navigate } from '../services/navigation.ts';
 type ResultProps = {
   response: Response;
   error: string | null;
@@ -9,7 +6,6 @@ type ResultProps = {
 };
 
 function Result({ response, error /*setLoading*/ }: ResultProps) {
-  const total_pages = Math.ceil(response.numFound / LIMIT);
   if (error) return <p className="text-gray-500">{error}</p>;
   return (
     <div className="flex flex-col gap-5">
@@ -47,10 +43,6 @@ function Result({ response, error /*setLoading*/ }: ResultProps) {
         )}
       </div>
       <div className="hidden w-60 h-20"></div>
-      <Pagination
-        totalPage={total_pages}
-        navigate={navigate} /*responseObj={response}*/
-      />
     </div>
   );
 }

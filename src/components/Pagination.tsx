@@ -1,33 +1,63 @@
 import Button from './Button.tsx';
-import { PAGE_DEFAULT } from './const/const.ts';
+import type { Response } from './MainPage.tsx';
+import { getBooks } from '../services/getBooks.ts';
 
 type PaginationProps = {
-  // responseObj: Response
-  currentPage?: number;
+  currentPage: number;
+  setCurrentPage: (page: number) => void;
   totalPage: number;
-  navigate: (page: number) => void;
-  // next: string | null;
-  // prev:string | null;
-  // setIsLoading: (value: boolean) => void;
+  setResponse: (response: Response) => void;
+  setIsLoading: (value: boolean) => void;
 };
 
 function Pagination({
-  /*responseObj*/ currentPage = PAGE_DEFAULT,
+  currentPage,
   totalPage,
-  navigate /*setIsLoading*/,
+  setIsLoading,
+  setResponse,
+  setCurrentPage,
 }: PaginationProps) {
-  // const [lastPage, setLastPage] = useState(1);
-  // useEffect(() => {
-  //   setLastPage(totalPage);
-  // }, []);
+  const navigate = (page: number) => {
+    console.log(page);
+    const searchString = localStorage.getItem('lastRequest');
+    if (searchString) {
+      setIsLoading(true);
+      console.log(page);
+      getBooks(searchString, page)
+        .then((res) => {
+          setResponse(res);
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
+  };
+  console.log(currentPage);
   return (
     <div className="flex justify-center items-center">
-      <Button onClick={() => navigate(currentPage - 1)} text="←" />
+      <Button
+        onClick={() => {
+          navigate(currentPage - 1);
+          setCurrentPage(currentPage - 1);
+        }}
+        text="←"
+      />
       <span className="text-white px-5">
         Page {currentPage} of {totalPage}
       </span>
-      <Button onClick={() => navigate(currentPage + 1)} text="→" />
+      <Button
+        onClick={() => {
+          navigate(currentPage + 1);
+          setCurrentPage(currentPage + 1);
+        }}
+        text="→"
+      />
     </div>
   );
 }
+
 export default Pagination;

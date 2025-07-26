@@ -3,6 +3,7 @@ import Button from './Button.tsx';
 import { saveToLocalStorage } from '../services/saveToLocalStorage.ts';
 import type { Response } from './MainPage.tsx';
 import { getBooks } from '../services/getBooks.ts';
+import { PAGE_DEFAULT } from './const/const.ts';
 
 type SearchProps = {
   onSearch: (response: Response) => void;
@@ -23,7 +24,7 @@ function Search({ onSearch, setIsLoading }: SearchProps) {
   const handleClickSearch = async () => {
     setIsLoading(true);
     try {
-      const data = await getBooks(searchStr);
+      const data = await getBooks(searchStr, PAGE_DEFAULT);
       saveToLocalStorage(searchStr);
       onSearch(data);
       console.log(data.docs);

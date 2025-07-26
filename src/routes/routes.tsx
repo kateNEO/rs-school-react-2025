@@ -4,6 +4,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import MainPage from '../components/MainPage.tsx';
 import ErrorBoundary from '../components/ErrorBoundary.tsx';
 import NotFound from '../components/NotFound.tsx';
+import About from '../About.tsx';
 
 const router = createBrowserRouter(
   [
@@ -28,7 +29,7 @@ const router = createBrowserRouter(
         },
         {
           path: ROUTES.ABOUT,
-          // element: <About />,
+          element: <About />,
         },
         {
           path: ROUTES.NOT_FOUND,

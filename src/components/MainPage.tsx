@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
-import { initialBooksDisplay } from '../services/initialPlanetsDisplay.ts';
+import { initialBooksDisplay } from '../services/initialBooksDisplay.ts';
 import { Link } from 'react-router-dom';
 import Search from './Search.tsx';
 import Result from './Result.tsx';
+import Pagination from './Pagination.tsx';
+import { LIMIT } from './const/const.ts';
 
 export type BooksList = {
   key: string;
@@ -11,7 +13,6 @@ export type BooksList = {
 };
 export type Response = {
   numFound: number;
-  currentPage: number;
   docs: BooksList[];
 };
 
@@ -19,10 +20,13 @@ function MainPage() {
   const [responseState, setResponseState] = useState<Response | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
+  const [currentPage, setCurrentPage] = useState<number>(1);
   useEffect(() => {
     initialBooksDisplay(setResponseState, setIsLoading, setError);
   }, []);
+  const total_pages = responseState
+    ? Math.ceil(responseState.numFound / LIMIT)
+    : 0;
   console.log(responseState);
   return (
     <div className="px-5">
@@ -36,11 +40,20 @@ function MainPage() {
       {isLoading || !responseState ? (
         <p className="text-gray-500">Loading...</p>
       ) : (
-        <Result
-          response={responseState}
-          error={error}
-          setLoading={setIsLoading}
-        />
+        <>
+          <Result
+            response={responseState}
+            error={error}
+            setLoading={setIsLoading}
+          />
+          <Pagination
+            totalPage={total_pages}
+            setIsLoading={setIsLoading}
+            setResponse={setResponseState}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
+        </>
       )}
     </div>
   );

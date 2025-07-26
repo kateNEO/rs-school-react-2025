@@ -1,4 +1,4 @@
-import { initialBooksDisplay } from '../src/services/initialPlanetsDisplay';
+import { initialBooksDisplay } from '../src/services/initialBooksDisplay';
 import * as getAllPlanetsModule from '../src/services/getBooks';
 import * as searchPlanetModule from '../src/services/searchPlanet';
 

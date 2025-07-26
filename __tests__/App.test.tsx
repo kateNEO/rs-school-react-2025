@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { vi } from 'vitest';
 import App from '../src/App';
-import * as dataLoader from '../src/services/initialPlanetsDisplay';
+import * as dataLoader from '../src/services/initialBooksDisplay';
 
 describe('App component', () => {
   it('renders loading state on mount', () => {

@@ -1,1 +1,4 @@
-export function navigate() {}
+// export function navigate(page:number) {
+//
+//   }
+// }
