@@ -36,7 +36,11 @@ function MainPage() {
       >
         About
       </Link>
-      <Search onSearch={setResponseState} setIsLoading={setIsLoading} />
+      <Search
+        onSearch={setResponseState}
+        setIsLoading={setIsLoading}
+        setCurrentPage={setCurrentPage}
+      />
       {isLoading || !responseState ? (
         <p className="text-gray-500">Loading...</p>
       ) : (

@@ -13,6 +13,7 @@ export async function initialBooksDisplay(
     let resp: Response;
     if (lastRequest) {
       resp = await getBooks(lastRequest, PAGE_DEFAULT);
+      console.log(11111);
     } else {
       resp = await getBooks('the', PAGE_DEFAULT);
     }

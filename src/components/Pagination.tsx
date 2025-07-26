@@ -18,11 +18,9 @@ function Pagination({
   setCurrentPage,
 }: PaginationProps) {
   const navigate = (page: number) => {
-    console.log(page);
     const searchString = localStorage.getItem('lastRequest');
-    if (searchString) {
+    if (searchString !== null) {
       setIsLoading(true);
-      console.log(page);
       getBooks(searchString, page)
         .then((res) => {
           setResponse(res);
@@ -36,7 +34,6 @@ function Pagination({
         });
     }
   };
-  console.log(currentPage);
   return (
     <div className="flex justify-center items-center">
       <Button

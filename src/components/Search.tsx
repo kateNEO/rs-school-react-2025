@@ -9,15 +9,10 @@ import { useForm } from 'react-hook-form';
 type SearchProps = {
   onSearch: (response: Response) => void;
   setIsLoading: (value: boolean) => void;
+  setCurrentPage: (page: number) => void;
 };
-function Search({ onSearch, setIsLoading }: SearchProps) {
-  // const [searchStr, setSearchStr] = useState<string>('');
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    // getValues
-  } = useForm<{ searchStr: string }>({
+function Search({ onSearch, setIsLoading, setCurrentPage }: SearchProps) {
+  const { register, handleSubmit, setValue } = useForm<{ searchStr: string }>({
     mode: 'onChange',
     defaultValues: {
       searchStr: '',
@@ -32,11 +27,11 @@ function Search({ onSearch, setIsLoading }: SearchProps) {
 
   const handleClickSearch = async ({ searchStr }: { searchStr: string }) => {
     setIsLoading(true);
+    setCurrentPage(PAGE_DEFAULT);
     try {
       const data = await getBooks(searchStr, PAGE_DEFAULT);
       saveToLocalStorage(searchStr);
       onSearch(data);
-      console.log(data.docs);
     } catch (error) {
       console.error(error);
     } finally {
@@ -51,15 +46,8 @@ function Search({ onSearch, setIsLoading }: SearchProps) {
       <input
         {...register('searchStr')}
         type="text"
-        // value={searchStr}
         className="border border-[#9F9F9F] text-white w-full h-10 rounded-[7px] p-4 hover:cursor-pointer hover:shadow-[0_4px_20px_#DDD] duration-300"
         placeholder="Witcher"
-        // onChange={handleSearchChange}
-        // onKeyDown={(e) => {
-        //   if (e.key === 'Enter') {
-        //     handleClickSearch();
-        //   }
-        // }}
       />
       <Button text="search" type="submit" />
     </form>
