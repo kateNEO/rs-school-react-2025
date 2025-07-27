@@ -5,6 +5,7 @@ import MainPage from '../pages/MainPage.tsx';
 import ErrorBoundary from '../components/ErrorBoundary.tsx';
 import NotFound from '../pages/NotFound.tsx';
 import About from '../pages/About.tsx';
+import Book from '../components/Book.tsx';
 
 const router = createBrowserRouter(
   [
@@ -24,8 +25,13 @@ const router = createBrowserRouter(
       children: [
         {
           path: ROUTES.HOME,
-          index: true,
           element: <MainPage />,
+          children: [
+            {
+              path: ROUTES.BOOK,
+              element: <Book />,
+            },
+          ],
         },
         {
           path: ROUTES.ABOUT,
