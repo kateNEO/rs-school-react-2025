@@ -39,13 +39,13 @@ describe('Pagination', () => {
 
   it('disables prev button on first page', () => {
     renderComponent(1, 5);
-    const prevButton = screen.getByText('←') as HTMLButtonElement;
+    const prevButton = screen.getByText<HTMLButtonElement>('←');
     expect(prevButton).toBeDisabled();
   });
 
   it('disables next button on last page', () => {
     renderComponent(5, 5);
-    const nextButton = screen.getByText('→') as HTMLButtonElement;
+    const nextButton = screen.getByText<HTMLButtonElement>('→');
     expect(nextButton).toBeDisabled();
   });
 

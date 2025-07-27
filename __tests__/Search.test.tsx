@@ -52,9 +52,6 @@ describe('Search component', () => {
   test('calls setSearchStr and navigates on submit', async () => {
     const mockSetSearchStr = vi.fn();
     const mockSetIsLoading = vi.fn();
-    // const mockNavigate = vi.fn();
-    // (useNavigate as unknown as vi.Mock).mockReturnValue(mockNavigate);
-
     render(
       <MemoryRouter>
         <Search
