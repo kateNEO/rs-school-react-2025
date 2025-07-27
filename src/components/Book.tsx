@@ -35,7 +35,7 @@ function Book() {
   }, [id]);
   return (
     <>
-      <div className="flex flex-col relative border-1 w-1/4 h-95 min-w-[220px] items-center justify-center border border-gray-200 rounded-md">
+      <div className="flex flex-col relative border-1 w-1/4 h-95 min-w-[240px] items-center justify-center border border-gray-200 rounded-md">
         <button
           onClick={() => hiddenBook()}
           className="absolute top-2 right-2 text-gray-500 text-xl font-bold hover: cursor-pointer hover:drop-shadow-[1px_1px_2px_#FFF]"
@@ -46,7 +46,7 @@ function Book() {
           <p className="text-gray-500">Loading...</p>
         ) : id ? (
           <>
-            <h2 className="text-2xl mt-4 drop-shadow-[1px_1px_0px_#FFF] font-bold text-gray-800 mb-2">
+            <h2 className=" text-xl text-2xl mt-4 drop-shadow-[1px_1px_0px_#FFF] font-bold text-gray-800 mb-2 md:text-2xl">
               {bookDetails?.title}
             </h2>
             <div

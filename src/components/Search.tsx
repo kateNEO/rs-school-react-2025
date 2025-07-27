@@ -28,10 +28,10 @@ function Search({ onSearch, setIsLoading }: SearchProps) {
   const navigate = useNavigate();
   const handleClickSearch = async ({ searchStr }: { searchStr: string }) => {
     setIsLoading(true);
+    setLastRequest(searchStr);
     navigate(`/?page=${PAGE_DEFAULT}`);
     try {
       const data = await getBooks(searchStr, PAGE_DEFAULT);
-      setLastRequest(searchStr);
       onSearch(data);
     } catch (error) {
       console.error(error);
