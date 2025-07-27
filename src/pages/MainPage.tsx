@@ -11,7 +11,7 @@ export type BooksCard = {
   key: string;
   title: string;
   author_name: string[];
-  cover_edition_key: string;
+  lending_edition_s: string;
 };
 export type Response = {
   numFound: number;
@@ -43,11 +43,7 @@ function MainPage() {
       >
         About
       </Link>
-      <Search
-        onSearch={setResponseState}
-        setIsLoading={setIsLoading}
-        setCurrentPage={(page) => setSearchParams({ page: page.toString() })}
-      />
+      <Search onSearch={setResponseState} setIsLoading={setIsLoading} />
       {isLoading || !responseState ? (
         <p className="text-gray-500">Loading...</p>
       ) : (

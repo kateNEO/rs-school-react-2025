@@ -10,14 +10,7 @@ function BookCard({ book, onClick }: BookProps) {
       key={book.key}
       className="mb-15 duration-300 text-white text-start h-15
                    hover:cursor-pointer group"
-      onClick={
-        () => onClick(book.cover_edition_key)
-        // {
-        //   // setShowDetails(true);
-        //   // setURL(book.cover_edition_key);
-        //   // console.log(e.target);
-        // }
-      }
+      onClick={() => onClick(book.key.split('/')[2])}
     >
       <div className="flex items-start gap-2">
         <span className="py-1">📚</span>
