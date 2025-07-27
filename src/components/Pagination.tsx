@@ -25,6 +25,7 @@ function Pagination({
         }}
         type="button"
         text="←"
+        disabled={currentPage === 1}
       />
       <span className="text-white px-5">
         Page {currentPage} of {totalPage}
@@ -36,6 +37,7 @@ function Pagination({
         }}
         text="→"
         type="button"
+        disabled={currentPage === totalPage}
       />
     </div>
   );

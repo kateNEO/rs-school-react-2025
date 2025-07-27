@@ -1,18 +1,16 @@
 import { useEffect } from 'react';
 import Button from './Button.tsx';
-import type { Response } from '../pages/MainPage.tsx';
-import { getBooks } from '../services/getBooks.ts';
 import { PAGE_DEFAULT } from './const/const.ts';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from '../hooks/useLocalStorage.ts';
 
 type SearchProps = {
-  onSearch: (response: Response) => void;
-  setIsLoading: (value: boolean) => void;
+  setSearchStr: (val: string) => void;
+  setIsLoading: (val: boolean) => void;
 };
-function Search({ onSearch, setIsLoading }: SearchProps) {
-  const [lastRequest, setLastRequest] = useLocalStorage('lastRequest');
+function Search({ setSearchStr, setIsLoading }: SearchProps) {
+  const [lastRequest] = useLocalStorage('lastRequest');
   const { register, handleSubmit, setValue } = useForm<{ searchStr: string }>({
     mode: 'onChange',
     defaultValues: {
@@ -28,16 +26,8 @@ function Search({ onSearch, setIsLoading }: SearchProps) {
   const navigate = useNavigate();
   const handleClickSearch = async ({ searchStr }: { searchStr: string }) => {
     setIsLoading(true);
-    setLastRequest(searchStr);
+    setSearchStr(searchStr);
     navigate(`/?page=${PAGE_DEFAULT}`);
-    try {
-      const data = await getBooks(searchStr, PAGE_DEFAULT);
-      onSearch(data);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
   };
   return (
     <form

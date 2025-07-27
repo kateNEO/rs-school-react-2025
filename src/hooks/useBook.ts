@@ -1,18 +1,17 @@
 import { useState, useEffect } from 'react';
 import { getBooks } from '../services/getBooks';
 import type { Response } from '../pages/MainPage.tsx';
-import { useLocalStorage } from './useLocalStorage.ts';
 
-export const useBooks = (page: number) => {
+export const useBooks = (page: number, searchStr: string) => {
   const [responseState, setResponseState] = useState<Response | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [lastRequest] = useLocalStorage('lastRequest');
+  // const [lastRequest] = useLocalStorage('lastRequest');
   useEffect(() => {
     const load = async () => {
       try {
         setIsLoading(true);
-        const response = await getBooks(lastRequest, page);
+        const response = await getBooks(searchStr, page);
         setResponseState(response);
       } catch (err) {
         setError('Something went wrong');
@@ -22,7 +21,7 @@ export const useBooks = (page: number) => {
       }
     };
     load();
-  }, [page, lastRequest]);
+  }, [page, searchStr]);
 
   return { responseState, isLoading, error, setResponseState, setIsLoading };
 };
