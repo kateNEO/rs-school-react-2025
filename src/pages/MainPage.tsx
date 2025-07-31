@@ -1,12 +1,13 @@
-import { Link, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import Search from '../components/Search.tsx';
 import Result from '../components/Result.tsx';
 import Pagination from '../components/Pagination.tsx';
-import { LIMIT, PAGE_DEFAULT } from '../components/const/const.ts';
+import { LIMIT, PAGE_DEFAULT } from '../const/const.ts';
 import { useNavigate } from 'react-router-dom';
 import { useBooks } from '../hooks/useBook.ts';
 import { useEffect } from 'react';
 import { useLocalStorage } from '../hooks/useLocalStorage.ts';
+import Header from '../components/Header.tsx';
 
 export type BooksCard = {
   key: string;
@@ -39,12 +40,7 @@ function MainPage() {
     : 1;
   return (
     <div className="px-5">
-      <Link
-        to="/about"
-        className="text-xl font-bold text-gray-700 hover:drop-shadow-[1px_1px_2px_#FFF]"
-      >
-        About
-      </Link>
+      <Header />
       <Search
         setSearchStr={(query: string) => setSearchStr(query)}
         setIsLoading={setIsLoading}

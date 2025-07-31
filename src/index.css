@@ -12,7 +12,8 @@ html {
   overflow: hidden;
   scroll-behavior: smooth;
   background-position: center;
-  background-image: url('./components/images/books-background.jpg');
+  background-image: url('images/books-background.png');
+  background-color: #181a22;
   background-size: cover;
   background-repeat: no-repeat;
 }

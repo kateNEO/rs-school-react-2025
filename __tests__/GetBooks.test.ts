@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { getBooks } from '../src/services/getBooks';
-import { LIMIT } from '../src/components/const/const';
+import { LIMIT } from '../src/const/const';
 
 describe('getAllPlanets', () => {
   beforeEach(() => {

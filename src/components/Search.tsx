@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import Button from './Button.tsx';
-import { PAGE_DEFAULT } from './const/const.ts';
+import { PAGE_DEFAULT } from '../const/const.ts';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from '../hooks/useLocalStorage.ts';
