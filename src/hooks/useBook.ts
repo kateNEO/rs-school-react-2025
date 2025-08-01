@@ -6,7 +6,6 @@ export const useBooks = (page: number, searchStr: string) => {
   const [responseState, setResponseState] = useState<Response | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  // const [lastRequest] = useLocalStorage('lastRequest');
   useEffect(() => {
     const load = async () => {
       try {

@@ -8,7 +8,7 @@ function BookCard({ book, onClick }: BookProps) {
   return (
     <div
       key={book.key}
-      className="mb-15 duration-300 text-white text-start h-15
+      className="mb-15 duration-300 text-white text-start
                    hover:cursor-pointer group"
       onClick={() => onClick(book.key.split('/')[2])}
     >

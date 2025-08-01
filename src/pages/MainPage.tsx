@@ -27,13 +27,16 @@ function MainPage() {
   const [searchStr, setSearchStr] = useLocalStorage('lastRequest');
   const { responseState, isLoading, error, setResponseState, setIsLoading } =
     useBooks(pageParam, searchStr);
+
   const setURL = (bookKey: string) => {
     const page = Number(pageParam);
     navigate(`/book/${bookKey}?page=${page}`);
   };
   useEffect(() => {
-    setSearchParams({ page: String(pageParam) });
-  }, [pageParam, setSearchParams]);
+    if (!searchParams.has('page')) {
+      navigate(`?page=${pageParam}`, { replace: true });
+    }
+  }, [pageParam, navigate, searchParams]);
 
   const total_pages = responseState
     ? Math.max(1, Math.ceil(responseState.numFound / LIMIT))
