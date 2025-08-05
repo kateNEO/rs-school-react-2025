@@ -7,7 +7,6 @@ type PaginationProps = {
   setCurrentPage: (page: number) => void;
   totalPage: number;
   setResponse: (response: Response) => void;
-  setIsLoading: (value: boolean) => void;
 };
 
 function Pagination({

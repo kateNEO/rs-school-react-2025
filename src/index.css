@@ -9,17 +9,25 @@ html,
   flex-direction: column;
 }
 html {
+  min-width: 550px;
   overflow: hidden;
   scroll-behavior: smooth;
   background-position: center;
   background-image: url('images/books-background.png');
-  background-color: #181a22;
   background-size: cover;
   background-repeat: no-repeat;
+  transition: background-color 0.3s;
+  color: #374151;
+  text-shadow: 1px 1px 1px #aaa;
 }
 body {
   margin: 0;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+}
+.dark {
+  background-color: #0e1015;
+  color: #b2b2bd;
+  text-shadow: none;
 }

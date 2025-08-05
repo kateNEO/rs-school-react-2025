@@ -22,5 +22,5 @@ export const useBooks = (page: number, searchStr: string) => {
     load();
   }, [page, searchStr]);
 
-  return { responseState, isLoading, error, setResponseState, setIsLoading };
+  return { responseState, isLoading, error, setResponseState };
 };

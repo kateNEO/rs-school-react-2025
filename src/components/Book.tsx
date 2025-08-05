@@ -35,10 +35,13 @@ function Book() {
   }, [id]);
   return (
     <>
-      <div className="flex flex-col relative border-1 w-1/4 min-h-[350px] max-h-[90px] min-w-[230px] items-center justify-center border border-gray-200 rounded-md">
+      <div
+        className="flex flex-col relative border-1 w-1/4 h-fit min-w-[200px]
+      pt-10 pb-5 px-1 items-center justify-center border border-gray-200 rounded-md text-inherit text-shadow:inherit"
+      >
         <button
           onClick={() => hiddenBook()}
-          className="absolute top-2 right-2 text-gray-500 text-xl font-bold hover: cursor-pointer hover:drop-shadow-[1px_1px_2px_#FFF]"
+          className="absolute top-2 right-2 text-gray-500 text-xl font-bold duration-300 hover:cursor-pointer hover:drop-shadow-[1px_1px_2px_#FFF]"
         >
           ×
         </button>
@@ -46,22 +49,22 @@ function Book() {
           <p className="text-gray-500">Loading...</p>
         ) : id ? (
           <>
-            <h2 className=" text-xl text-2xl mt-4 drop-shadow-[1px_1px_0px_#FFF] font-bold text-gray-800 mb-2 md:text-2xl">
+            <h2 className=" text-xl font-bold mb-2 md:text-2xl">
               {bookDetails?.title}
             </h2>
             <div
-              className="bg-gray-100/50 w-4/5 text-sm text-gray-600 rounded-md py-6 px-1
+              className="bg-gray-100/50 w-7/8 text-sm text-gray-600 rounded-md py-6 px-1
          hover:bg-blue-50 duration-500"
             >
-              <p>
+              <p className="text-xs md:text-sm">
                 <span className="font-medium">Publish year: </span>
                 {bookDetails?.first_publish_date || 'no information'}
               </p>
-              <p>
+              <p className="text-xs md:text-sm">
                 <span className="font-medium">Count of pages: </span>
                 {bookDetails?.number_of_pages || 'no information'}
               </p>
-              <p>
+              <p className="text-xs md:text-sm">
                 <span className="font-medium">Subjects: </span>
                 {Array.isArray(bookDetails?.subjects)
                   ? bookDetails?.subjects.map(

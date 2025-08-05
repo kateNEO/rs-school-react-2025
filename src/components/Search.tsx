@@ -7,9 +7,8 @@ import { useLocalStorage } from '../hooks/useLocalStorage.ts';
 
 type SearchProps = {
   setSearchStr: (val: string) => void;
-  setIsLoading: (val: boolean) => void;
 };
-function Search({ setSearchStr, setIsLoading }: SearchProps) {
+function Search({ setSearchStr }: SearchProps) {
   const [lastRequest] = useLocalStorage('lastRequest');
   const { register, handleSubmit, setValue } = useForm<{ searchStr: string }>({
     mode: 'onChange',
@@ -25,7 +24,6 @@ function Search({ setSearchStr, setIsLoading }: SearchProps) {
   }, [setValue, lastRequest]);
   const navigate = useNavigate();
   const handleClickSearch = async ({ searchStr }: { searchStr: string }) => {
-    setIsLoading(true);
     setSearchStr(searchStr);
     navigate(`/?page=${PAGE_DEFAULT}`);
   };

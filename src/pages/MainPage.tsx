@@ -25,8 +25,10 @@ function MainPage() {
   const pageParam = Number(searchParams.get('page')) || PAGE_DEFAULT;
   const navigate = useNavigate();
   const [searchStr, setSearchStr] = useLocalStorage('lastRequest');
-  const { responseState, isLoading, error, setResponseState, setIsLoading } =
-    useBooks(pageParam, searchStr);
+  const { responseState, isLoading, error, setResponseState } = useBooks(
+    pageParam,
+    searchStr
+  );
 
   const setURL = (bookKey: string) => {
     const page = Number(pageParam);
@@ -42,12 +44,9 @@ function MainPage() {
     ? Math.max(1, Math.ceil(responseState.numFound / LIMIT))
     : 1;
   return (
-    <div className="px-5">
+    <div className="px-5 text-inherit">
       <Header />
-      <Search
-        setSearchStr={(query: string) => setSearchStr(query)}
-        setIsLoading={setIsLoading}
-      />
+      <Search setSearchStr={(query: string) => setSearchStr(query)} />
       {isLoading || !responseState ? (
         <p className="text-gray-500">Loading...</p>
       ) : (
@@ -55,7 +54,6 @@ function MainPage() {
           <Result setURL={setURL} response={responseState} error={error} />
           <Pagination
             totalPage={total_pages}
-            setIsLoading={setIsLoading}
             setResponse={setResponseState}
             currentPage={Number(pageParam)}
             setCurrentPage={(page) =>
