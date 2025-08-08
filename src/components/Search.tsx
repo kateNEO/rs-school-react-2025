@@ -10,7 +10,9 @@ type SearchProps = {
 };
 function Search({ setSearchStr }: SearchProps) {
   const [lastRequest] = useLocalStorage('lastRequest');
-  const { register, handleSubmit, setValue } = useForm<{ searchStr: string }>({
+  const { register, handleSubmit, setValue, getValues } = useForm<{
+    searchStr: string;
+  }>({
     mode: 'onChange',
     defaultValues: {
       searchStr: '',
@@ -22,10 +24,15 @@ function Search({ setSearchStr }: SearchProps) {
       setValue('searchStr', saved);
     }
   }, [setValue, lastRequest]);
+
   const navigate = useNavigate();
   const handleClickSearch = async ({ searchStr }: { searchStr: string }) => {
     setSearchStr(searchStr);
-    navigate(`/?page=${PAGE_DEFAULT}`);
+    const currentValue = getValues('searchStr');
+    console.log(currentValue, lastRequest);
+    if (currentValue !== lastRequest) {
+      navigate(`/page/${PAGE_DEFAULT}`);
+    }
   };
   return (
     <form

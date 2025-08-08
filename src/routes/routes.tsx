@@ -1,11 +1,12 @@
 import App from '../App.tsx';
 import { ROUTES } from './paths.ts';
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 import MainPage from '../pages/MainPage.tsx';
 import ErrorBoundary from '../components/ErrorBoundary.tsx';
 import NotFound from '../pages/NotFound.tsx';
 import About from '../pages/About.tsx';
 import Book from '../components/Book.tsx';
+import { PAGE_DEFAULT } from '../const/const.ts';
 
 const router = createBrowserRouter(
   [
@@ -24,7 +25,11 @@ const router = createBrowserRouter(
       ),
       children: [
         {
-          path: ROUTES.HOME,
+          index: true, // this is "/"
+          element: <Navigate to={`/page/${PAGE_DEFAULT}`} replace />,
+        },
+        {
+          path: ROUTES.PAGE,
           element: <MainPage />,
           children: [
             {

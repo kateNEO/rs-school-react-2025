@@ -12,13 +12,12 @@ function Result({ response, error, setURL }: ResultProps) {
   return (
     <div className="flex justify-between gap-5">
       <div className="grid text-start grid-cols-2 duration-300 gap-[2vw] max-w-[1440px] w-3/3 xl:grid-cols-3">
-        {response.numFound > 0 ? (
-          response.docs.map((book: BooksCard) => (
-            <BookCard book={book} onClick={setURL} key={book.key} />
-          ))
-        ) : (
+        {response.numFound === 0 && (
           <p className="text-gray-500">Not Found :( </p>
         )}
+        {response.docs.map((book: BooksCard) => (
+          <BookCard book={book} onClick={setURL} key={book.key} />
+        ))}
       </div>
       <Outlet />
     </div>

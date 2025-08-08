@@ -14,6 +14,7 @@ function BookCard({ book, onClick }: BookProps) {
       onClick={() => onClick(book.key.split('/')[2])}
     >
       <div className="flex items-start gap-2">
+        <input type="checkbox" onClick={(e) => e.stopPropagation()} />
         <span className="py-1">📚</span>
         <h2 className="text-sm font-bold  duration-300 group-hover:drop-shadow-[1px_1px_2px_#AAA] md:text-2xl">
           {book.title}

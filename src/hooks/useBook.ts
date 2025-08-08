@@ -6,21 +6,18 @@ export const useBooks = (page: number, searchStr: string) => {
   const [responseState, setResponseState] = useState<Response | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  console.log(searchStr);
   useEffect(() => {
-    const load = async () => {
-      try {
-        setIsLoading(true);
-        const response = await getBooks(searchStr, page);
-        setResponseState(response);
-      } catch (err) {
+    setIsLoading(true);
+    getBooks(searchStr, page)
+      .then((res: Response) => setResponseState(res))
+      .catch((err) => {
         setError('Something went wrong');
         console.log(err);
-      } finally {
+      })
+      .finally(() => {
         setIsLoading(false);
-      }
-    };
-    load();
+      });
   }, [page, searchStr]);
-
-  return { responseState, isLoading, error, setResponseState };
+  return { responseState, isLoading, error };
 };

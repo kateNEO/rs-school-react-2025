@@ -36,7 +36,7 @@ function Book() {
   return (
     <>
       <div
-        className="flex flex-col relative border-1 w-1/4 h-fit min-w-[200px]
+        className="flex flex-col relative border-1 w-1/4 h-fit min-w-[200px] min-h-80
       pt-10 pb-5 px-1 items-center justify-center border border-gray-200 rounded-md text-inherit text-shadow:inherit"
       >
         <button

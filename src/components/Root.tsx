@@ -5,20 +5,20 @@ import { RouterProvider } from 'react-router-dom';
 import router from '../routes/routes.tsx';
 
 function Root() {
-  const [currentTheme] = useLocalStorage('theme');
+  const [currentTheme, saveTheme] = useLocalStorage('theme');
   const isValidTheme = currentTheme === 'light' || currentTheme === 'dark';
   const [theme, setTheme] = useState<ThemeType>(
     isValidTheme ? currentTheme : 'light'
   );
 
   useEffect(() => {
-    localStorage.setItem('theme', theme);
+    saveTheme(theme);
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
     }
-  }, [theme]);
+  }, [theme, saveTheme]);
 
   const toggle = useCallback(() => {
     setTheme((t) => (t === 'light' ? 'dark' : 'light'));
