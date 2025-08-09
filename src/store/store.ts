@@ -3,12 +3,12 @@ type SelectedCardsStore = {
   selectedIdList: string[];
   toggleItem: (key: string) => void;
   isSelected: (key: string) => boolean;
+  removeAll: () => void;
 };
 export const store = create<SelectedCardsStore>((set, get) => {
   return {
     selectedIdList: [],
     toggleItem: (key: string) => {
-      console.log(key);
       const current = get().selectedIdList;
       const exists = current.includes(key);
       const updated = exists
@@ -16,8 +16,10 @@ export const store = create<SelectedCardsStore>((set, get) => {
         : [...current, key];
 
       set({ selectedIdList: updated });
-      console.log(store.getState().selectedIdList);
     },
-    isSelected: (key: string) => get().selectedIdList.includes(key),
+    isSelected: (key: string) => {
+      return get().selectedIdList.includes(key);
+    },
+    removeAll: () => set({ selectedIdList: [] }),
   };
 });

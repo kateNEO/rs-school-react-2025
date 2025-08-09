@@ -9,13 +9,15 @@ function Root() {
   const [theme, setTheme] = useState<ThemeType>(savedObj.theme);
 
   useEffect(() => {
-    setValue({ theme: theme });
+    if (savedObj.theme !== theme) {
+      setValue({ theme });
+    }
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
     }
-  }, [theme, setValue]);
+  }, [theme, savedObj.theme, setValue]);
 
   const toggle = useCallback(() => {
     setTheme((t) => (t === 'light' ? 'dark' : 'light'));
