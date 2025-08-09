@@ -3,13 +3,16 @@ import Button from './Button.tsx';
 import { PAGE_DEFAULT } from '../const/const.ts';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { useLocalStorage } from '../hooks/useLocalStorage.ts';
+import {
+  type LocalStorageType,
+  useLocalStorage,
+} from '../hooks/useLocalStorage.ts';
 
 type SearchProps = {
-  setSearchStr: (val: string) => void;
+  setSearchStr: (val: Partial<LocalStorageType>) => void;
 };
 function Search({ setSearchStr }: SearchProps) {
-  const [lastRequest] = useLocalStorage('lastRequest');
+  const [savedObj] = useLocalStorage();
   const { register, handleSubmit, setValue, getValues } = useForm<{
     searchStr: string;
   }>({
@@ -19,18 +22,18 @@ function Search({ setSearchStr }: SearchProps) {
     },
   });
   useEffect(() => {
-    const saved = lastRequest;
+    const saved = savedObj.lastRequest;
     if (saved) {
       setValue('searchStr', saved);
     }
-  }, [setValue, lastRequest]);
+  }, [setValue, savedObj.lastRequest]);
 
   const navigate = useNavigate();
   const handleClickSearch = async ({ searchStr }: { searchStr: string }) => {
-    setSearchStr(searchStr);
+    setSearchStr({ lastRequest: searchStr });
     const currentValue = getValues('searchStr');
-    console.log(currentValue, lastRequest);
-    if (currentValue !== lastRequest) {
+    console.log(currentValue, savedObj.lastRequest);
+    if (currentValue !== savedObj.lastRequest) {
       navigate(`/page/${PAGE_DEFAULT}`);
     }
   };

@@ -22,9 +22,12 @@ function MainPage() {
   const { numberPage } = useParams();
   const pageParam = Number(numberPage) || PAGE_DEFAULT;
   const navigate = useNavigate();
-  const [searchStr, setSearchStr] = useLocalStorage('lastRequest');
-  const { responseState, isLoading, error } = useBooks(pageParam, searchStr);
-  console.log('MainPage');
+  const [storedObj, setValue] = useLocalStorage();
+  const { responseState, isLoading, error } = useBooks(
+    pageParam,
+    storedObj.lastRequest
+  );
+
   const setURL = (bookKey: string) => {
     navigate(`/page/${pageParam}/book/${bookKey}`);
   };
@@ -36,7 +39,7 @@ function MainPage() {
     : 1;
   return (
     <div className="px-5 text-inherit">
-      <Search setSearchStr={setSearchStr} />
+      <Search setSearchStr={setValue} />
       {isLoading || !responseState ? (
         <p className="text-gray-500">Loading...</p>
       ) : (

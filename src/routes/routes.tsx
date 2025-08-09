@@ -25,7 +25,7 @@ const router = createBrowserRouter(
       ),
       children: [
         {
-          index: true, // this is "/"
+          index: true,
           element: <Navigate to={`/page/${PAGE_DEFAULT}`} replace />,
         },
         {

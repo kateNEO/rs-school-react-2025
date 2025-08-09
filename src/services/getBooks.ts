@@ -5,7 +5,7 @@ export async function getBooks(
   searchString: string,
   pageNumber: number
 ): Promise<Response> {
-  if (searchString === '') {
+  if (!searchString) {
     searchString = 'the';
   }
   const res = await fetch(
