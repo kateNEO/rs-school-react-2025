@@ -1,6 +1,8 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 import { PAGE_DEFAULT } from '../const/const.ts';
+import { useQuery } from '@tanstack/react-query';
+import { getBookDetails } from '../services/getBooksDetails.ts';
+import Button from './Button.tsx';
 
 export type BookDetails = {
   title: string;
@@ -12,32 +14,33 @@ export type BookDetails = {
 function Book() {
   const { id, numberPage } = useParams();
   const navigate = useNavigate();
-  const [bookDetails, setBookDetails] = useState<BookDetails | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
   const hiddenBook = () => {
     const page = Number(numberPage) || PAGE_DEFAULT;
     navigate(`/page/${page}`);
   };
-  useEffect(() => {
-    const getBooksDetails = async () => {
-      try {
-        setIsLoading(true);
-        const res = await fetch(`https://openlibrary.org/works/${id}.json`);
-        const data = await res.json();
-        setBookDetails(data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setIsLoading(false);
+  const isIdPresent = Boolean(id && id.length > 0);
+  const {
+    data: bookDetails,
+    isLoading,
+    error,
+    refetch,
+  } = useQuery<BookDetails, Error>({
+    queryKey: ['bookDetails', id],
+    queryFn: () => {
+      if (!id) {
+        return Promise.reject(new Error('No id'));
       }
-    };
-    getBooksDetails();
-  }, [id]);
+      return getBookDetails(id);
+    },
+    enabled: isIdPresent,
+    staleTime: 5 * 60 * 1000,
+    retry: 1,
+  });
   return (
     <>
       <div
-        className="flex flex-col relative border-1 w-1/4 h-fit min-w-[200px] min-h-80
-      pt-10 pb-5 px-1 items-center justify-center border border-gray-200 rounded-md text-inherit text-shadow:inherit"
+        className="flex flex-col justify-around relative border-1 w-1/4 h-fit min-w-[200px] min-h-80
+      pt-10 pb-5 px-1 items-center border border-gray-200 rounded-md text-inherit text-shadow:inherit"
       >
         <button
           onClick={() => hiddenBook()}
@@ -45,6 +48,7 @@ function Book() {
         >
           ×
         </button>
+        {error && <p className="text-gray-500">{error.message}</p>}
         {isLoading ? (
           <p className="text-gray-500">Loading...</p>
         ) : id ? (
@@ -53,7 +57,7 @@ function Book() {
               {bookDetails?.title}
             </h2>
             <div
-              className="bg-gray-100/50 w-7/8 text-sm text-gray-600 rounded-md py-6 px-1
+              className="bg-gray-100/50 w-7/8 text-sm mb-3 text-gray-600 rounded-md py-6 px-1
          hover:bg-blue-50 duration-500"
             >
               <p className="text-xs md:text-sm">
@@ -85,6 +89,7 @@ function Book() {
         ) : (
           <p className="text-gray-500">No more information</p>
         )}
+        <Button text="Refetch card" type="button" onClick={() => refetch()} />
       </div>
     </>
   );

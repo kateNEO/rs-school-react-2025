@@ -22,7 +22,6 @@ function BookCard({ book, onClick, setSelected }: BookProps) {
     store.getState().toggleItem(book);
     setIsSelect(!isSelected);
     setSelected(selectedCount);
-    console.log(store.getState().selectedIdList);
   };
   return (
     <div
