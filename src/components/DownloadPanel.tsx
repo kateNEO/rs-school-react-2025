@@ -1,5 +1,6 @@
 import Button from './Button.tsx';
 import { store } from '../store/store.ts';
+import { createCSV } from '../services/createCSV.ts';
 
 type DownloadPanelPropsType = {
   countOfSelected: number;
@@ -14,7 +15,10 @@ function DownloadPanel({
     store.getState().removeAll();
     setSelected(0);
   };
-  const save = () => {};
+  const save = () => {
+    const dataForSave = store.getState().selectedIdList;
+    createCSV(dataForSave);
+  };
 
   return (
     <div className="flex justify-between py-10">

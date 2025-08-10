@@ -1,5 +1,6 @@
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { PAGE_DEFAULT } from '../const/const.ts';
 
 export type BookDetails = {
   title: string;
@@ -9,14 +10,13 @@ export type BookDetails = {
 };
 
 function Book() {
-  const { id } = useParams();
-  const [searchParams] = useSearchParams();
+  const { id, numberPage } = useParams();
   const navigate = useNavigate();
   const [bookDetails, setBookDetails] = useState<BookDetails | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const hiddenBook = () => {
-    const page = searchParams.get('page') || '1';
-    navigate(`/?page=${page}`);
+    const page = Number(numberPage) || PAGE_DEFAULT;
+    navigate(`/page/${page}`);
   };
   useEffect(() => {
     const getBooksDetails = async () => {

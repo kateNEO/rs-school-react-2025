@@ -12,14 +12,14 @@ function BookCard({ book, onClick, setSelected }: BookProps) {
   const bookId = book.key.split('/')[2];
   const initialSelectedValue = store.getState().isSelected(bookId) ?? false;
   const [isSelected, setIsSelect] = useState(initialSelectedValue);
-  const isSelect = store.getState().isSelected(bookId);
+  const isSelect = store.getState().isSelected(book.key);
   const selectedCount = store.getState().selectedIdList.length;
   useEffect(() => {
     setSelected(selectedCount);
   }, [selectedCount, setSelected]);
 
-  const toggleItem = (id: string) => {
-    store.getState().toggleItem(id);
+  const toggleItem = () => {
+    store.getState().toggleItem(book);
     setIsSelect(!isSelected);
     setSelected(selectedCount);
     console.log(store.getState().selectedIdList);
@@ -35,7 +35,7 @@ function BookCard({ book, onClick, setSelected }: BookProps) {
         <input
           type="checkbox"
           onClick={(e) => e.stopPropagation()}
-          onChange={() => toggleItem(bookId)}
+          onChange={() => toggleItem()}
           checked={isSelect}
         />
         <span className="py-1">📚</span>
@@ -43,13 +43,13 @@ function BookCard({ book, onClick, setSelected }: BookProps) {
           {book.title}
         </h2>
       </div>
-      {book.author_name?.map((author: string, index: number) => (
+      {book.author_name?.slice(0, 5).map((author: string, index: number) => (
         <span
           key={index}
           className="text-sm font-bold duration-300 group-hover:drop-shadow-[1px_1px_2px_#AAA]"
         >
           {author}
-          {index < book.author_name.length - 1 && <span>, </span>}
+          {index < 5 && index < book.author_name.length - 1 && <span>, </span>}
         </span>
       ))}
     </div>
