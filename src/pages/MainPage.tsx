@@ -23,7 +23,7 @@ function MainPage() {
   const pageParam = Number(numberPage) || PAGE_DEFAULT;
   const navigate = useNavigate();
   const [storedObj, setValue] = useLocalStorage();
-  const { responseState, isLoading, error } = useBooks(
+  const { data, isLoading, error, refetch } = useBooks(
     pageParam,
     storedObj.lastRequest
   );
@@ -34,17 +34,20 @@ function MainPage() {
   const handleSetCurrentPage = (pageParam: number) => {
     navigate(`/page/${pageParam}`);
   };
-  const total_pages = responseState
-    ? Math.max(1, Math.ceil(responseState.numFound / LIMIT))
-    : 1;
+  const total_pages = data ? Math.max(1, Math.ceil(data.numFound / LIMIT)) : 1;
   return (
     <div className="px-5 text-inherit">
       <Search setSearchStr={setValue} />
-      {isLoading || !responseState ? (
+      {isLoading || !data ? (
         <p className="text-gray-500">Loading...</p>
       ) : (
         <>
-          <Result setURL={setURL} response={responseState} error={error} />
+          <Result
+            setURL={setURL}
+            response={data}
+            error={error}
+            refetch={refetch}
+          />
           <Pagination
             totalPage={total_pages}
             currentPage={Number(pageParam)}

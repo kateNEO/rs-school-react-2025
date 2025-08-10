@@ -4,17 +4,19 @@ import { Outlet } from 'react-router-dom';
 import DownloadPanel from './DownloadPanel.tsx';
 import { useState } from 'react';
 import { store } from '../store/store.ts';
+import Button from './Button.tsx';
 type ResultProps = {
   response: Response;
-  error: string | null;
+  error: Error | null;
   setURL: (bookKey: string) => void;
+  refetch: () => void;
 };
 
-function Result({ response, error, setURL }: ResultProps) {
+function Result({ response, error, setURL, refetch }: ResultProps) {
   const [countOfSelected, setCountOfSelected] = useState(
     store.getState().selectedIdList.length
   );
-  if (error) return <p className="text-gray-500">{error}</p>;
+  if (error) return <p className="text-gray-500">{error.message}</p>;
   return (
     <>
       <div className="flex justify-between gap-5">
@@ -39,6 +41,7 @@ function Result({ response, error, setURL }: ResultProps) {
           setSelected={setCountOfSelected}
         />
       )}
+      <Button text="refetch" type="button" onClick={() => refetch()} />
     </>
   );
 }
