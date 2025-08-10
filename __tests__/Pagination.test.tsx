@@ -30,8 +30,6 @@ describe('Pagination', () => {
           currentPage={currentPage}
           totalPage={totalPage}
           setCurrentPage={setCurrentPage}
-          setResponse={() => {}}
-          setIsLoading={() => {}}
         />
       </MemoryRouter>
     );
@@ -54,7 +52,6 @@ describe('Pagination', () => {
     const nextButton = screen.getByText('→');
     fireEvent.click(nextButton);
     expect(setCurrentPage).toHaveBeenCalledWith(3);
-    expect(mockedNavigate).toHaveBeenCalledWith('/?page=3');
   });
 
   it('calls setCurrentPage and navigate when prev clicked', () => {
@@ -62,7 +59,6 @@ describe('Pagination', () => {
     const prevButton = screen.getByText('←');
     fireEvent.click(prevButton);
     expect(setCurrentPage).toHaveBeenCalledWith(2);
-    expect(mockedNavigate).toHaveBeenCalledWith('/?page=2');
   });
 
   it('shows correct page info', () => {

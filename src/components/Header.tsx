@@ -22,7 +22,7 @@ function Header() {
           About
         </Link>
       </div>
-      <div className="" onClick={toggle}>
+      <div className="icon-wrapper" onClick={toggle}>
         {theme === 'dark' ? (
           <Light className="w-8 h-8 stroke-gray-500 duration-300 hover:stroke-gray-400 hover:cursor-pointer" />
         ) : (

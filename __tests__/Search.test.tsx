@@ -3,44 +3,42 @@ import Search from '../src/components/Search';
 import { vi } from 'vitest';
 import * as localStorageHook from '../src/hooks/useLocalStorage';
 import { MemoryRouter } from 'react-router-dom';
+import { PAGE_DEFAULT } from '../src/const/const';
 
+const mockNavigate = vi.fn();
+vi.mock('react-router-dom', async () => {
+  const actual = await vi.importActual('react-router-dom');
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+  };
+});
 describe('Search component', () => {
   beforeEach(() => {
     vi.spyOn(localStorageHook, 'useLocalStorage').mockReturnValue([
-      '',
+      { theme: 'light', lastRequest: '' },
       vi.fn(),
     ]);
   });
   afterEach(() => {
     vi.restoreAllMocks();
-    localStorage.clear();
   });
   test('renders input with default value from localStorage', () => {
     const mockSetSearchStr = vi.fn();
-    const mockSetIsLoading = vi.fn();
-
     render(
       <MemoryRouter>
-        <Search
-          setSearchStr={mockSetSearchStr}
-          setIsLoading={mockSetIsLoading}
-        />
+        <Search setSearchStr={mockSetSearchStr} />
       </MemoryRouter>
     );
-
     const input = screen.getByPlaceholderText<HTMLInputElement>('Harry Potter');
     expect(input.value).toBe('');
   });
 
   test('updates input value on change', () => {
     const mockSetSearchStr = vi.fn();
-    const mockSetIsLoading = vi.fn();
     render(
       <MemoryRouter>
-        <Search
-          setSearchStr={mockSetSearchStr}
-          setIsLoading={mockSetIsLoading}
-        />
+        <Search setSearchStr={mockSetSearchStr} />
       </MemoryRouter>
     );
     const input = screen.getByPlaceholderText<HTMLInputElement>('Harry Potter');
@@ -51,13 +49,9 @@ describe('Search component', () => {
 
   test('calls setSearchStr and navigates on submit', async () => {
     const mockSetSearchStr = vi.fn();
-    const mockSetIsLoading = vi.fn();
     render(
       <MemoryRouter>
-        <Search
-          setSearchStr={mockSetSearchStr}
-          setIsLoading={mockSetIsLoading}
-        />
+        <Search setSearchStr={mockSetSearchStr} />
       </MemoryRouter>
     );
 
@@ -68,8 +62,8 @@ describe('Search component', () => {
     fireEvent.click(button);
 
     await waitFor(() => {
-      expect(mockSetSearchStr).toHaveBeenCalledWith('Story');
-      expect(mockSetIsLoading).toHaveBeenCalledWith(true);
+      expect(mockSetSearchStr).toHaveBeenCalledWith({ lastRequest: 'Story' });
+      expect(mockNavigate).toHaveBeenCalledWith(`/page/${PAGE_DEFAULT}`);
     });
   });
 });
