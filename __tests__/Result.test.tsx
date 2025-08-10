@@ -3,8 +3,24 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import Result from '../src/components/Result';
 
+vi.mock('../src/store/store.ts', () => {
+  const selectedIdList: BooksCard[] = [];
+
+  return {
+    store: {
+      getState: () => ({
+        selectedIdList,
+        isSelected: (key: string) => selectedIdList.some((b) => b.key === key),
+        toggleItem: vi.fn(),
+        removeAll: vi.fn(),
+      }),
+    },
+  };
+});
+
 describe('Result component', () => {
   const mockSetURL = vi.fn();
+  const mockRefetch = vi.fn();
 
   const mockBooks: BooksCard[] = [
     {
@@ -31,10 +47,19 @@ describe('Result component', () => {
     docs: [],
   };
 
-  test('renders books when response has data', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  test('renders book titles when response has books', () => {
     render(
       <MemoryRouter>
-        <Result response={responseWithBooks} error={null} setURL={mockSetURL} />
+        <Result
+          response={responseWithBooks}
+          error={null}
+          setURL={mockSetURL}
+          refetch={mockRefetch}
+        />
       </MemoryRouter>
     );
 
@@ -43,12 +68,14 @@ describe('Result component', () => {
   });
 
   test('renders error message when error is present', () => {
+    const error = new Error('Error occurred');
     render(
       <MemoryRouter>
         <Result
           response={responseWithBooks}
-          error="Error occurred"
+          error={error}
           setURL={mockSetURL}
+          refetch={mockRefetch}
         />
       </MemoryRouter>
     );
@@ -59,24 +86,51 @@ describe('Result component', () => {
   test('renders "Not Found :(" when no books', () => {
     render(
       <MemoryRouter>
-        <Result response={responseNoBooks} error={null} setURL={mockSetURL} />
+        <Result
+          response={responseNoBooks}
+          error={null}
+          setURL={mockSetURL}
+          refetch={mockRefetch}
+        />
       </MemoryRouter>
     );
 
     expect(screen.getByText('Not Found :(')).toBeInTheDocument();
   });
 
-  test('calls setURL when a book card is clicked', () => {
+  test('calls setURL with correct book key when BookCard clicked', () => {
     render(
       <MemoryRouter>
-        <Result response={responseWithBooks} error={null} setURL={mockSetURL} />
+        <Result
+          response={responseWithBooks}
+          error={null}
+          setURL={mockSetURL}
+          refetch={mockRefetch}
+        />
       </MemoryRouter>
     );
 
     const bookElement = screen.getByText('Book One');
-
     fireEvent.click(bookElement);
 
     expect(mockSetURL).toHaveBeenCalledWith('book1');
+  });
+
+  test('calls refetch when refetch button clicked', () => {
+    render(
+      <MemoryRouter>
+        <Result
+          response={responseWithBooks}
+          error={null}
+          setURL={mockSetURL}
+          refetch={mockRefetch}
+        />
+      </MemoryRouter>
+    );
+
+    const button = screen.getByRole('button', { name: /refetch/i });
+    fireEvent.click(button);
+
+    expect(mockRefetch).toHaveBeenCalled();
   });
 });

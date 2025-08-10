@@ -1,17 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import Book, { type BookDetails } from '../src/components/Book';
-
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 const mockNavigate = vi.fn();
-
-vi.mock('react-router-dom', async () => {
-  const actual = await vi.importActual('react-router-dom');
-  return {
-    ...actual,
-    useNavigate: () => mockNavigate,
-  };
-});
-
 const mockBookDetails: BookDetails = {
   title: 'Mock Book Title',
   first_publish_date: '1995',
@@ -19,57 +9,60 @@ const mockBookDetails: BookDetails = {
   subjects: ['Fiction', 'Adventure', 'Fantasy'],
 };
 
-beforeEach(() => {
-  vi.clearAllMocks();
-  const mockResponse: Partial<Response> = {
-    json: vi.fn().mockResolvedValue(mockBookDetails),
-  };
-  global.fetch = vi.fn(() => Promise.resolve(mockResponse as Response));
-});
+vi.mock('react-router-dom', () => ({
+  useNavigate: () => mockNavigate,
+  useParams: () => ({ id: 'OL12345W', numberPage: '1' }),
+}));
+
+vi.mock('../src/services/getBooksDetails.ts', () => ({
+  getBookDetails: () => Promise.resolve(mockBookDetails),
+}));
+
+function renderWithQueryClient(ui: React.ReactElement) {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: { retry: false },
+    },
+  });
+  return render(
+    <QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>
+  );
+}
 
 describe('Book component', () => {
-  it('renders loading initially', () => {
-    render(
-      <MemoryRouter>
-        <Book />
-      </MemoryRouter>
-    );
-    expect(screen.getByText(/loading.../i)).toBeInTheDocument();
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('shows loading initially', () => {
+    renderWithQueryClient(<Book />);
+    expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
 
   it('renders book details after fetch', async () => {
-    render(
-      <MemoryRouter initialEntries={['/book/OL12345W']}>
-        <Routes>
-          <Route path="/book/:id" element={<Book />} />
-        </Routes>
-      </MemoryRouter>
-    );
-
-    await waitFor(() => {
-      expect(screen.getByText('Mock Book Title')).toBeInTheDocument();
-      expect(screen.getByText(/1995/)).toBeInTheDocument();
-      expect(screen.getByText(/123/)).toBeInTheDocument();
-      expect(screen.getByText(/Fiction/)).toBeInTheDocument();
-    });
-  });
-
-  it('calls navigate on close button click', async () => {
-    render(
-      <MemoryRouter initialEntries={['/page/1/book/OL12345W']}>
-        <Routes>
-          <Route path="/page/1/book/:id" element={<Book />} />
-        </Routes>
-      </MemoryRouter>
-    );
-
+    renderWithQueryClient(<Book />);
     await waitFor(() =>
       expect(screen.getByText('Mock Book Title')).toBeInTheDocument()
     );
+    expect(screen.getByText(/1995/)).toBeInTheDocument();
+    expect(screen.getByText(/123/)).toBeInTheDocument();
+    expect(screen.getByText(/Fiction/)).toBeInTheDocument();
+  });
 
-    const closeButton = screen.getByRole('button', { name: /×|close/i });
-    fireEvent.click(closeButton);
-
+  it('calls navigate on close button click', async () => {
+    renderWithQueryClient(<Book />);
+    await waitFor(() =>
+      expect(screen.getByText('Mock Book Title')).toBeInTheDocument()
+    );
+    fireEvent.click(screen.getByRole('button', { name: /×/ }));
     expect(mockNavigate).toHaveBeenCalledWith('/page/1');
+  });
+
+  it('calls refetch when Refetch button clicked', async () => {
+    renderWithQueryClient(<Book />);
+    await waitFor(() =>
+      expect(screen.getByText('Mock Book Title')).toBeInTheDocument()
+    );
+    fireEvent.click(screen.getByRole('button', { name: /refetch card/i }));
   });
 });
