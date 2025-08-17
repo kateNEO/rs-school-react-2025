@@ -1,6 +1,3 @@
-'use client';
-// import '../App.css';
-// import '../index.css';
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -8,6 +5,7 @@ import { ThemeContext, type ThemeType } from '../hooks/themeContext';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import ErrorBoundary from '../components/ErrorBoundary';
+import Header from '../components/Header';
 
 const queryClient = new QueryClient();
 
@@ -37,6 +35,7 @@ export default function App({ Component, pageProps }: AppProps) {
             </div>
           }
         >
+          <Header />
           <Component {...pageProps} />
         </ErrorBoundary>
       </ThemeContext.Provider>

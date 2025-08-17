@@ -1,4 +1,3 @@
-import { useParams } from 'react-router-dom';
 import Search from '../../components/Search';
 import Result from '../../components/Result';
 import Pagination from '../../components/Pagination';
@@ -6,6 +5,7 @@ import { LIMIT, PAGE_DEFAULT } from '../../const/const';
 import { useBooks } from '../../hooks/useBook';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 export type BooksCard = {
   key: string;
@@ -19,23 +19,25 @@ export type Response = {
 };
 
 function MainPage() {
-  const { numberPage } = useParams();
-  const pageParam = Number(numberPage) || PAGE_DEFAULT;
-  // const navigate = useNavigate();
-  const [storedObj, setValue] = useLocalStorage();
   const router = useRouter();
+  const [storedObj, setValue] = useLocalStorage();
+  const [currentPage, setCurrentPage] = useState(PAGE_DEFAULT);
   const { data, isLoading, error, refetch } = useBooks(
-    pageParam,
+    currentPage,
     storedObj.lastRequest
   );
-
   const setURL = (bookKey: string) => {
-    router.push(`/page/${pageParam}/book/${bookKey}`);
+    router.push(`/page/${currentPage}/book/${bookKey}`);
   };
   const handleSetCurrentPage = (pageParam: number) => {
+    setCurrentPage(pageParam);
     router.push(`/page/${pageParam}`);
   };
   const total_pages = data ? Math.max(1, Math.ceil(data.numFound / LIMIT)) : 1;
+  useEffect(() => {
+    const pageParam = Number(router.query.pageNumber) || PAGE_DEFAULT;
+    setCurrentPage(pageParam);
+  }, [router.query.pageNumber]);
   return (
     <div className="px-5 text-inherit">
       <Search setSearchStr={setValue} />
@@ -51,7 +53,7 @@ function MainPage() {
           />
           <Pagination
             totalPage={total_pages}
-            currentPage={Number(pageParam)}
+            currentPage={Number(currentPage)}
             setCurrentPage={handleSetCurrentPage}
           />
         </>
