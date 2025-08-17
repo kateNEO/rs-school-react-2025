@@ -1,8 +1,8 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { PAGE_DEFAULT } from '../const/const.ts';
+import { PAGE_DEFAULT } from '../const/const';
 import { useQuery } from '@tanstack/react-query';
-import { getBookDetails } from '../services/getBooksDetails.ts';
-import Button from './Button.tsx';
+import { getBookDetails } from '../services/getBooksDetails';
+import Button from './Button';
 
 export type BookDetails = {
   title: string;

@@ -1,4 +1,5 @@
-import { useState } from 'react';
+'use client';
+import { useEffect, useState } from 'react';
 
 export type LocalStorageType = {
   theme: 'light' | 'dark';
@@ -10,15 +11,23 @@ export function useLocalStorage(): [
   (value: Partial<LocalStorageType>) => void,
 ] {
   const storeKey = 'storedObj';
-
-  const [storedObj, setStoredValue] = useState<LocalStorageType>(() => {
-    return getSavedData(storeKey);
-  });
-
+  const initialValue: LocalStorageType = {
+    theme: 'light',
+    lastRequest: '',
+  };
+  const [storedObj, setStoredValue] = useState<LocalStorageType>(initialValue);
+  useEffect(() => {
+    try {
+      const item = localStorage.getItem(storeKey);
+      if (item) setStoredValue(JSON.parse(item));
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
   const setValue = (value: Partial<LocalStorageType>) => {
     try {
-      const currentV = getSavedData(storeKey);
-      const newValue = { ...currentV, ...value };
+      // const currentV = getSavedData(storeKey);
+      const newValue = { ...storedObj, ...value };
       setStoredValue(newValue);
       localStorage.setItem(storeKey, JSON.stringify(newValue));
     } catch (error) {
@@ -28,16 +37,13 @@ export function useLocalStorage(): [
 
   return [storedObj, setValue];
 }
-export function getSavedData(key: string): LocalStorageType {
-  const initialValue: LocalStorageType = {
-    theme: 'light',
-    lastRequest: '',
-  };
-  try {
-    const item = localStorage.getItem(key);
-    return item ? JSON.parse(item) : initialValue;
-  } catch (error) {
-    console.error(error);
-    return initialValue;
-  }
-}
+// export function getSavedData(key: string): LocalStorageType {
+//
+//   try {
+//     const item = localStorage.getItem(key);
+//     return item ? JSON.parse(item) : initialValue;
+//   } catch (error) {
+//     console.error(error);
+//     return initialValue;
+//   }
+// }

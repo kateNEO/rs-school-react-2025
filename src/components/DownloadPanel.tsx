@@ -1,6 +1,6 @@
-import Button from './Button.tsx';
-import { store } from '../store/store.ts';
-import { createCSV } from '../services/createCSV.ts';
+import Button from './Button';
+import { store } from '../store/store';
+import { createCSV } from '../services/createCSV';
 
 type DownloadPanelPropsType = {
   countOfSelected: number;

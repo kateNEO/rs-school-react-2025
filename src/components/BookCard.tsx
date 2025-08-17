@@ -1,5 +1,5 @@
-import type { BooksCard } from '../pages/MainPage.tsx';
-import { store } from '../store/store.ts';
+import type { BooksCard } from '../pages/page/[pageNumber].tsx';
+import { store } from '../store/store';
 import { useEffect, useState } from 'react';
 
 type BookProps = {

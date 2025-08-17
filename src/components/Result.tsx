@@ -1,10 +1,10 @@
-import type { BooksCard, Response } from '../pages/MainPage.tsx';
-import BookCard from './BookCard.tsx';
+import type { BooksCard, Response } from '../pages/page/[pageNumber].tsx';
+import BookCard from './BookCard';
 import { Outlet } from 'react-router-dom';
-import DownloadPanel from './DownloadPanel.tsx';
+import DownloadPanel from './DownloadPanel';
 import { useState } from 'react';
-import { store } from '../store/store.ts';
-import Button from './Button.tsx';
+import { store } from '../store/store';
+import Button from './Button';
 type ResultProps = {
   response: Response;
   error: Error | null;

@@ -1,11 +1,11 @@
 import { useParams } from 'react-router-dom';
-import Search from '../components/Search.tsx';
-import Result from '../components/Result.tsx';
-import Pagination from '../components/Pagination.tsx';
-import { LIMIT, PAGE_DEFAULT } from '../const/const.ts';
-import { useNavigate } from 'react-router-dom';
-import { useBooks } from '../hooks/useBook.ts';
-import { useLocalStorage } from '../hooks/useLocalStorage.ts';
+import Search from '../../components/Search';
+import Result from '../../components/Result';
+import Pagination from '../../components/Pagination';
+import { LIMIT, PAGE_DEFAULT } from '../../const/const';
+import { useBooks } from '../../hooks/useBook';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
+import { useRouter } from 'next/router';
 
 export type BooksCard = {
   key: string;
@@ -21,18 +21,19 @@ export type Response = {
 function MainPage() {
   const { numberPage } = useParams();
   const pageParam = Number(numberPage) || PAGE_DEFAULT;
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [storedObj, setValue] = useLocalStorage();
+  const router = useRouter();
   const { data, isLoading, error, refetch } = useBooks(
     pageParam,
     storedObj.lastRequest
   );
 
   const setURL = (bookKey: string) => {
-    navigate(`/page/${pageParam}/book/${bookKey}`);
+    router.push(`/page/${pageParam}/book/${bookKey}`);
   };
   const handleSetCurrentPage = (pageParam: number) => {
-    navigate(`/page/${pageParam}`);
+    router.push(`/page/${pageParam}`);
   };
   const total_pages = data ? Math.max(1, Math.ceil(data.numFound / LIMIT)) : 1;
   return (

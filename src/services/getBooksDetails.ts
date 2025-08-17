@@ -1,4 +1,4 @@
-import type { BookDetails } from '../components/Book.tsx';
+import type { BookDetails } from '../components/Book';
 
 export async function getBookDetails(id: string): Promise<BookDetails> {
   const res = await fetch(`https://openlibrary.org/works/${id}.json`);

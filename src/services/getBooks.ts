@@ -1,5 +1,5 @@
-import type { Response } from '../pages/MainPage.tsx';
-import { LIMIT } from '../const/const.ts';
+import type { Response } from '../pages/page/[pageNumber].tsx';
+import { LIMIT } from '../const/const';
 
 export async function getBooks(
   searchString: string,

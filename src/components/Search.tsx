@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
-import Button from './Button.tsx';
-import { PAGE_DEFAULT } from '../const/const.ts';
+import Button from './Button';
+import { PAGE_DEFAULT } from '../const/const';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 import {
   type LocalStorageType,
   useLocalStorage,
-} from '../hooks/useLocalStorage.ts';
+} from '../hooks/useLocalStorage';
+import { useRouter } from 'next/router';
 
 type SearchProps = {
   setSearchStr: (val: Partial<LocalStorageType>) => void;
@@ -28,13 +28,14 @@ function Search({ setSearchStr }: SearchProps) {
     }
   }, [setValue, savedObj.lastRequest]);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
+  const router = useRouter();
   const handleClickSearch = async ({ searchStr }: { searchStr: string }) => {
     setSearchStr({ lastRequest: searchStr });
     const currentValue = getValues('searchStr');
     console.log(currentValue, savedObj.lastRequest);
     if (currentValue !== savedObj.lastRequest) {
-      navigate(`/page/${PAGE_DEFAULT}`);
+      router.push(`/page/${PAGE_DEFAULT}`);
     }
   };
   return (
