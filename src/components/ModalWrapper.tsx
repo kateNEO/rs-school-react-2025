@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 
 type ModalProps = {
@@ -12,8 +12,18 @@ export const ModalWrapper: React.FC<ModalProps> = ({
   onClose,
   children,
 }) => {
-  if (!isOpen) return null;
-
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleEsc = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => {
+      window.removeEventListener('keydown', handleEsc);
+    };
+  }, [isOpen, onClose]);
   return ReactDOM.createPortal(
     <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm">
       <div className="relative bg-white rounded-xl max-w-xl w-full p-4">

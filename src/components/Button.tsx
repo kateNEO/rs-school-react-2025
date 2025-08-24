@@ -10,8 +10,14 @@ function Button({ onClick, text, value, disabled = false }: ButtonProps) {
     <button
       disabled={disabled}
       onClick={() => onClick?.(value)}
-      className="px-5 py-2 w-fit bg-[#1c1e45]
-      text-white font-semibold rounded-md shadow-md hover:shadow-[0_4px_20px_#FFF] duration-300 hover:cursor-pointer"
+      className={`px-5 py-2 w-fit bg-[#1c1e45]
+      text-white font-semibold rounded-md shadow-md hover:shadow-[0_4px_20px_#FFF] duration-300 hover:cursor-pointer
+      ${
+        disabled
+          ? 'bg-gray-400 cursor-not-allowed hover:shadow-none'
+          : 'bg-[#1c1e45] hover:shadow-[0_4px_20px_#FFF] hover:cursor-pointer duration-300'
+      }
+    `}
     >
       {text}
     </button>

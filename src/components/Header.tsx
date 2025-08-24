@@ -7,12 +7,11 @@ import DarkIcon from '../../public/images/Dark.svg';
 import Button from './Button';
 import { useState } from 'react';
 import { ModalWrapper } from './ModalWrapper';
-import RHFForm from './RHFForm.tsx';
+import RHFForm from './RHFForm';
 import UncontrolledForm from './UncontrolledForm';
 
 function Header() {
   const [isUncontrolledOpen, setUncontrolledOpen] = useState(false);
-  console.log(isUncontrolledOpen);
   const [isRHFOpen, setRHFOpen] = useState(false);
   const { theme, toggle } = useTheme();
   return (
@@ -54,7 +53,6 @@ function Header() {
       >
         <UncontrolledForm />
       </ModalWrapper>
-
       <ModalWrapper isOpen={isRHFOpen} onClose={() => setRHFOpen(false)}>
         <RHFForm />
       </ModalWrapper>

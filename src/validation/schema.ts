@@ -13,9 +13,7 @@ export const userFormSchema = z
         message: 'First letter must be uppercase',
       }),
 
-    age: z
-      .number({ message: 'Age must be a number' })
-      .nonnegative({ message: 'Age cannot be negative' }),
+    age: z.number().min(0, { message: 'Age cannot be negative' }),
 
     email: z.email('Invalid email address'),
 
@@ -36,15 +34,15 @@ export const userFormSchema = z
     }),
 
     picture: z
-      .any()
-      .refine((file) => file instanceof File, 'File is required')
-      .refine(
-        (file) => ['image/png', 'image/jpeg'].includes(file.type),
-        'Only PNG or JPEG files are allowed'
-      )
-      .refine((file) => file.size <= 5 * 1024 * 1024, 'Max file size is 5MB'),
+      .instanceof(File, { message: 'File is required' })
+      .refine((file) => file.size >= 5 * 1024 * 1024, {
+        message: 'File must be smaller than 5MB',
+      })
+      .refine((file) => ['image/png', 'image/jpeg'].includes(file.type), {
+        message: 'Only PNG or JPEG files are allowed',
+      }),
 
-    country: z.string().min(1, 'Country is required'),
+    country: z.string().min(1, { message: 'Country is required' }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: 'Passwords must match',

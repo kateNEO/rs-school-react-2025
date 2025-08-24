@@ -1,4 +1,4 @@
-import type { BooksCard, Response } from '../pages/page/[pageNumber].tsx';
+import type { BooksCard, Response } from '../pages/page/[pageNumber]';
 import BookCard from './BookCard';
 import DownloadPanel from './DownloadPanel';
 import { useState } from 'react';

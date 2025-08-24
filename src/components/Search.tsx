@@ -28,7 +28,6 @@ function Search({ setSearchStr }: SearchProps) {
     }
   }, [setValue, savedObj.lastRequest]);
 
-  // const navigate = useNavigate();
   const router = useRouter();
   const handleClickSearch = async ({ searchStr }: { searchStr: string }) => {
     setSearchStr({ lastRequest: searchStr });
