@@ -1,8 +1,7 @@
-import { useNavigate, useParams } from 'react-router-dom';
-import { PAGE_DEFAULT } from '../const/const';
 import { useQuery } from '@tanstack/react-query';
 import { getBookDetails } from '../services/getBooksDetails';
 import Button from './Button';
+import { useRouter } from 'next/router';
 
 export type BookDetails = {
   title: string;
@@ -12,30 +11,30 @@ export type BookDetails = {
 };
 
 function Book() {
-  const { id, numberPage } = useParams();
-  const navigate = useNavigate();
+  const router = useRouter();
+  const { pageNumber, book } = router.query;
   const hiddenBook = () => {
-    const page = Number(numberPage) || PAGE_DEFAULT;
-    navigate(`/page/${page}`);
+    router.push(`/page/${pageNumber}`);
   };
-  const isIdPresent = Boolean(id && id.length > 0);
+  const bookId = Array.isArray(book) ? book[0] : book;
   const {
     data: bookDetails,
     isLoading,
     error,
     refetch,
   } = useQuery<BookDetails, Error>({
-    queryKey: ['bookDetails', id],
+    queryKey: ['bookDetails', book],
     queryFn: () => {
-      if (!id) {
+      if (!bookId) {
         return Promise.reject(new Error('No id'));
       }
-      return getBookDetails(id);
+      return getBookDetails(bookId);
     },
-    enabled: isIdPresent,
+    enabled: !!bookId,
     staleTime: 5 * 60 * 1000,
     retry: 1,
   });
+
   return (
     <>
       <div
@@ -51,7 +50,7 @@ function Book() {
         {error && <p className="text-gray-500">{error.message}</p>}
         {isLoading ? (
           <p className="text-gray-500">Loading...</p>
-        ) : id ? (
+        ) : book ? (
           <>
             <h2 className=" text-xl font-bold mb-2 md:text-2xl">
               {bookDetails?.title}

@@ -27,7 +27,10 @@ function MainPage() {
     storedObj.lastRequest
   );
   const setURL = (bookKey: string) => {
-    router.push(`/page/${currentPage}/book/${bookKey}`);
+    router.push({
+      pathname: `/page/${currentPage}`,
+      query: { book: bookKey },
+    });
   };
   const handleSetCurrentPage = (pageParam: number) => {
     setCurrentPage(pageParam);
