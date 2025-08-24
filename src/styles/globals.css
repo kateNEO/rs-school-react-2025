@@ -1,0 +1,42 @@
+@import 'tailwindcss';
+#__next {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+  background-color: rgba(27, 26, 41, 0.23);
+  overflow: auto;
+}
+html {
+  min-width: 550px;
+  overflow: hidden;
+  scroll-behavior: smooth;
+  background-position: center;
+  background-image: url('../../public/images/books-background.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  transition: background-color 0.3s;
+  color: #374151;
+  text-shadow: 1px 1px 1px #aaa;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+body {
+  margin: 0;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+.dark {
+  background-color: #0e1015;
+  color: #b2b2bd;
+  text-shadow: none;
+}
