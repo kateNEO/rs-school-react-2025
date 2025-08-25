@@ -1,6 +1,8 @@
 import Button from './Button';
 import { useRef, useState } from 'react';
-import { userFormSchema } from '../validation/schema.ts';
+import { userFormSchema } from '../validation/schema';
+import InputField from './InputField';
+import { countries } from '../const/const';
 
 function UncontrolledForm() {
   const formRef = useRef<HTMLFormElement>(null);
@@ -9,19 +11,20 @@ function UncontrolledForm() {
     e.preventDefault();
     if (!formRef.current) return;
     const formData = new FormData(formRef.current);
-    console.log(formData.get('acceptTerms'));
+    console.log(formData.get('confirmPassword'));
     const data = {
       name: formData.get('name'),
       age: Number(formData.get('age')),
       email: formData.get('email'),
-      password: formData.get('password'),
-      confirmPassword: formData.get('confirmPassword'),
+      password: String(formData.get('password') || ''),
+      confirmPassword: String(formData.get('confirmPassword') || ''),
       gender: formData.get('gender'),
       acceptTerms: formData.get('acceptTerms') === 'on',
       picture: {
         file: formData.get('picture') as File,
       },
     };
+    console.log(formData.get('password'), formData.get('confirmPassword'));
     const result = userFormSchema.safeParse(data);
     if (!result.success) {
       const fieldErrors: Record<string, string> = {};
@@ -31,91 +34,84 @@ function UncontrolledForm() {
           fieldErrors[err.path[0].toString()] = err.message;
         }
       });
-
+      console.log(fieldErrors);
       setErrors(fieldErrors);
     }
   };
   return (
-    <form className="flex flex-col gap-4" ref={formRef} onSubmit={handleSubmit}>
-      <label className="text-left text-sm leading-8 text-[#545454]">Name</label>
-      <input
-        className="border border-[#9F9F9F] w-full h-10 rounded-[7px] p-4 hover:cursor-pointer"
-        name="name"
-        type="text"
-        placeholder="your name"
-      />
+    <form
+      className="flex flex-col max-h-250 gap-2"
+      ref={formRef}
+      onSubmit={handleSubmit}
+    >
+      <InputField label="Name" type="text" name="name" placeholder="name" />
       {errors.name && (
         <p className="h-5 text-red-500 text-[12px]">{errors.name}</p>
       )}
-      <label className="text-left text-sm leading-8 text-[#545454]">Age</label>
-      <input
-        className="border border-[#9F9F9F] w-full h-10 rounded-[7px] p-4 hover:cursor-pointer"
-        name="age"
-        type="number"
-        placeholder="your age"
-      />
+      {errors.name && (
+        <p className="h-5 text-red-500 text-[12px]">{errors.name}</p>
+      )}
+      <InputField label="Age" name="age" type="text" placeholder="age" />
       {errors.age && (
         <p className="h-5 text-red-500 text-[12px]">{errors.age}</p>
       )}
-      <label className="text-left text-sm leading-8 text-[#545454]">
-        Email
-      </label>
-      <input
-        className="border border-[#9F9F9F] w-full h-10 rounded-[7px] p-4 hover:cursor-pointer"
+      <InputField
+        label="Email"
         name="email"
-        type="email"
+        type="text"
         placeholder="example@example.com"
       />
       {errors.email && (
         <p className="h-5 text-red-500 text-[12px]">{errors.email}</p>
       )}
-      <label className="text-left text-sm leading-8 text-[#545454]">
-        Password
-      </label>
-      <input
-        className="border border-[#9F9F9F] w-full h-10 rounded-[7px] p-4 hover:cursor-pointer"
-        name="password"
+      <InputField
+        label="Password"
         type="password"
         placeholder="password..."
+        name="password"
       />
       {errors.password && (
         <p className="h-5 text-red-500 text-[12px]">{errors.password}</p>
       )}
-      <label className="text-left text-sm leading-8 text-[#545454]">
-        Repeat password
-      </label>
-      <input
-        className="border border-[#9F9F9F] w-full h-10 rounded-[7px] p-4 hover:cursor-pointer"
-        name="confirmPassword"
+      <InputField
+        label="Repeat password"
         type="password"
-        placeholder="repite password..."
+        placeholder="password..."
+        name="confirmPassword"
       />
       {errors.confirmPassword && (
         <p className="h-5 text-red-500 text-[12px]">{errors.confirmPassword}</p>
       )}
-      <label className="text-left text-sm leading-8 text-[#545454]">
-        Gender
-      </label>
-      <select
-        className="border border-[#9F9F9F] w-full h-10 rounded-[7px] hover:cursor-pointer"
-        name="gender"
-      >
-        <option>male</option>
-        <option>female</option>
-      </select>
+      <div>
+        <label className="text-left text-sm leading-6 text-[#545454]">
+          Gender
+        </label>
+        <select className="border border-[#9F9F9F] w-full h-10 rounded-[7px] hover:cursor-pointer">
+          <option>male</option>
+          <option>female</option>
+        </select>
+      </div>
+      <InputField type="text" label="Country" autoCompleteList={countries} />
+      {errors.country && (
+        <p className="h-5 text-red-500 text-[12px]">{errors.country}</p>
+      )}
       <div className="flex items-center gap-2">
         <input className="w-4 h-4" type="checkbox" name="acceptTerms" />
         <span className="text-sm leading-5 text-[#545454]">
           Accept Terms and Conditions agreement
         </span>
       </div>
-      <label>Upload Picture</label>
-      <input
-        className="border border-[#9F9F9F] w-full h-10 rounded-[7px] p-4 hover:cursor-pointer"
-        name="picture"
+      {errors.acceptTerms && (
+        <p className="h-5 text-red-500 text-[12px]">{errors.acceptTerms}</p>
+      )}
+      <InputField
         type="file"
+        label="Upload Picture"
         accept="image/png, image/jpeg"
       />
+      {errors.picture && (
+        <p className="h-5 text-red-500 text-[12px]">{errors.picture}</p>
+      )}
       <Button text="Submit" type="submit" />
     </form>
   );

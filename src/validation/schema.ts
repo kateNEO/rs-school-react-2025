@@ -1,8 +1,7 @@
 import { z } from 'zod';
+import { countries } from '../const/const';
 
 const firstUppercaseLetter = /^[A-Z].*$/;
-
-const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).+$/;
 
 export const userFormSchema = z
   .object({
@@ -13,38 +12,59 @@ export const userFormSchema = z
         message: 'First letter must be uppercase',
       }),
 
-    age: z.number().min(0, { message: 'Age cannot be negative' }),
+    age: z
+      .number({ message: 'Value should be number' })
+      .min(1, { message: 'Age cannot be negative or 0' }),
 
     email: z.email('Invalid email address'),
 
     password: z
       .string()
-      .min(8, { message: 'Password must be at least 8 characters' })
-      .regex(passwordRegex, {
-        message:
-          'Password must contain 1 number, 1 uppercase, 1 lowercase, and 1 special character',
+      .min(8, { message: 'Password must contain at least 8 characters' })
+      .refine((val) => /[A-Z]/.test(val), {
+        message: 'Password must contain at least one uppercase letter',
+      })
+      .refine((val) => /[a-z]/.test(val), {
+        message: 'Password must contain at least one lowercase letter',
+      })
+      .refine((val) => !/\s/.test(val), {
+        message: 'Password must not contain leading or trailing whitespace',
+      })
+      .refine((val) => /[0-9]/.test(val), {
+        message: 'Password must contain at least one digit',
+      })
+      .refine((val) => /[^A-Za-z0-9]/.test(val), {
+        message: 'Password must contain at least one special symbol',
       }),
 
     confirmPassword: z.string(),
 
-    gender: z.enum(['male', 'female', 'other'], 'Please select gender'),
+    gender: z.enum(['male', 'female'], 'Please select gender'),
 
     acceptTerms: z.boolean().refine((val) => val === true, {
       message: 'You must accept the Terms and Conditions',
     }),
 
     picture: z
-      .instanceof(File, { message: 'File is required' })
-      .refine((file) => file.size >= 5 * 1024 * 1024, {
+      .custom<FileList>((val) => val instanceof FileList && val.length > 0, {
+        message: 'File is required',
+      })
+      .refine((fileList) => fileList.length > 0, 'File is required')
+      .refine((files) => files[0]?.size <= 5 * 1024 * 1024, {
         message: 'File must be smaller than 5MB',
       })
-      .refine((file) => ['image/png', 'image/jpeg'].includes(file.type), {
+      .refine((files) => ['image/png', 'image/jpeg'].includes(files[0]?.type), {
         message: 'Only PNG or JPEG files are allowed',
       }),
 
-    country: z.string().min(1, { message: 'Country is required' }),
+    country: z.enum(countries, 'Please select country'),
   })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: 'Passwords must match',
-    path: ['confirmPassword'],
+  .superRefine((data, ctx) => {
+    if (data.password !== data.confirmPassword) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Passwords must match',
+        path: ['confirmPassword'],
+      });
+    }
   });

@@ -4,7 +4,7 @@ import DownloadPanel from './DownloadPanel';
 import { useState } from 'react';
 import { store } from '../store/store';
 import Button from './Button';
-import Book from './Book.tsx';
+import Book from './Book';
 import { router } from 'next/client';
 type ResultProps = {
   response: Response;

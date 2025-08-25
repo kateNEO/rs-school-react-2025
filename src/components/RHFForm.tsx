@@ -1,9 +1,10 @@
 import InputField from './InputField';
-import Button from './Button.tsx';
+import Button from './Button';
 import { useForm } from 'react-hook-form';
 import { userFormSchema } from '../validation/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { countries } from '../const/const';
 
 export type userFormSchemaData = z.infer<typeof userFormSchema>;
 function RHFForm() {
@@ -15,26 +16,25 @@ function RHFForm() {
     mode: 'onChange',
     resolver: zodResolver(userFormSchema),
   });
-  console.log(isValid, errors);
   const submitHandler = () => {};
   return (
     <form
       onSubmit={handleSubmit(submitHandler)}
-      className="flex flex-col gap-4"
+      className="flex flex-col max-h-250 gap-2"
     >
       <InputField
-        register={register}
+        {...register('name')}
         label="First Name"
-        name="name"
         type="text"
+        placeholder="name"
       />
       {errors.name && (
         <p className="h-5 text-red-500 text-[12px]">{errors.name.message}</p>
       )}
       <InputField
         label="Age"
-        type="number"
-        register={register}
+        type="text"
+        placeholder="age"
         {...register('age', { valueAsNumber: true })}
       />
       {errors.age && (
@@ -43,18 +43,16 @@ function RHFForm() {
       <InputField
         label="Email"
         type="text"
-        name="email"
         placeholder="example@example.com"
-        register={register}
+        {...register('email')}
       />
       {errors.email && (
         <p className="h-5 text-red-500 text-[12px]">{errors.email.message}</p>
       )}
       <InputField
-        register={register}
+        {...register('password')}
         label="Password"
         type="password"
-        name="password"
         placeholder="password..."
       />
       {errors.password && (
@@ -63,10 +61,9 @@ function RHFForm() {
         </p>
       )}
       <InputField
-        register={register}
+        {...register('confirmPassword')}
         label="Repeat password"
         type="password"
-        name="confirmPassword"
         placeholder="password..."
       />
       {errors.confirmPassword && (
@@ -87,6 +84,15 @@ function RHFForm() {
       {errors.gender && (
         <p className="h-5 text-red-500 text-[12px]">{errors.gender.message}</p>
       )}
+      <InputField
+        type="text"
+        label="Country"
+        autoCompleteList={countries}
+        {...register('country')}
+      />
+      {errors.country && (
+        <p className="h-5 text-red-500 text-[12px]">{errors.country.message}</p>
+      )}
       <div className="flex items-center gap-2">
         <input
           className="w-4 h-4"
@@ -103,11 +109,10 @@ function RHFForm() {
         </p>
       )}
       <InputField
-        name="picture"
         type="file"
         label="Upload Picture"
         accept="image/png, image/jpeg"
-        register={register}
+        {...register('picture')}
       />
       {errors.picture && (
         <p className="h-5 text-red-500 text-[12px]">{errors.picture.message}</p>

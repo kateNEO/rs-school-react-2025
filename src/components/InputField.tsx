@@ -1,35 +1,45 @@
-import type { FieldValues, UseFormRegister, Path } from 'react-hook-form';
-
-type InputFieldProps<T extends FieldValues> = {
+type InputFieldProps = {
+  name?: string;
   label: string;
   type: string;
   placeholder?: string;
-  name: Path<T>;
   accept?: string;
-  register: UseFormRegister<T>;
+  autoCompleteList?: string[];
 };
 
-function InputField<T extends FieldValues>({
+function InputField({
   label,
   type,
   placeholder,
+  autoCompleteList,
   name,
-  register,
-}: InputFieldProps<T>) {
+  ...props
+}: InputFieldProps) {
+  const countryListId = 'countries-list';
   return (
-    <div className="flex flex-col mt-1.5">
-      <label className="text-left text-sm leading-8 text-[#545454]">
+    <div className="flex flex-col mt-1">
+      <label className="text-left text-sm leading-6 text-[#545454]">
         {label}
       </label>
       <div className="relative w-full">
         <input
+          name={name}
           type={type}
-          className="border border-[#9F9F9F] w-full h-10 rounded-[7px] p-4 hover:cursor-pointer"
+          className="border border-[#9F9F9F] w-full h-8 rounded-[7px] p-2 hover:cursor-pointer"
           placeholder={placeholder}
-          {...register(name)}
+          list={autoCompleteList ? countryListId : undefined}
+          {...props}
         />
+        {autoCompleteList && (
+          <datalist id={countryListId}>
+            {autoCompleteList.map((value) => (
+              <option key={value} value={value} />
+            ))}
+          </datalist>
+        )}
       </div>
     </div>
   );
 }
+
 export default InputField;

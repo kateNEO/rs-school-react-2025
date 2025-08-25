@@ -12,7 +12,6 @@ export async function getBooks(
     `https://openlibrary.org/search.json?title=${searchString}&page=${pageNumber}&limit=${LIMIT}`
   );
   const data: Response = await res.json();
-  console.log(data);
   return {
     numFound: data.numFound,
     docs: data.docs,

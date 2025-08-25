@@ -4,4 +4,5 @@ export const ROUTES = {
   ABOUT: '/about',
   BOOK: '/page/:numberPage/book/:id',
   NOT_FOUND: '*',
+  FORMS: '/forms',
 };
