@@ -19,10 +19,10 @@ function Forms() {
         isOpen={isUncontrolledOpen}
         onClose={() => setUncontrolledOpen(false)}
       >
-        <UncontrolledForm />
+        <UncontrolledForm onClose={() => setUncontrolledOpen(false)} />
       </ModalWrapper>
       <ModalWrapper isOpen={isRHFOpen} onClose={() => setRHFOpen(false)}>
-        <RHFForm />
+        <RHFForm onClose={() => setRHFOpen(false)} />
       </ModalWrapper>
     </div>
   );

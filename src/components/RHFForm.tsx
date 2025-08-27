@@ -9,7 +9,7 @@ import { formStore } from '../store/formStore.ts';
 import { fileToBase64 } from '../services/converterToBase64.ts';
 
 export type userFormSchemaData = z.infer<typeof userFormSchema>;
-function RHFForm() {
+function RHFForm({ onClose }: { onClose: () => void }) {
   const {
     register,
     handleSubmit,
@@ -30,6 +30,7 @@ function RHFForm() {
       console.log(formattedData);
       formStore.getState().setData(formattedData);
     }
+    onClose();
   };
   return (
     <form

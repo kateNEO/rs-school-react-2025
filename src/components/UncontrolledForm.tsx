@@ -7,7 +7,7 @@ import { fileToBase64 } from '../services/converterToBase64.ts';
 import { formStore } from '../store/formStore.ts';
 import type { FormData } from '../store/formStore.ts';
 
-function UncontrolledForm() {
+function UncontrolledForm({ onClose }: { onClose: () => void }) {
   const formRef = useRef<HTMLFormElement>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const handleSubmit = async (e: React.FormEvent) => {
@@ -60,6 +60,7 @@ function UncontrolledForm() {
       }
       const formattedData: FormData = { ...data, picture: pictureBase64 };
       formStore.getState().setData(formattedData);
+      onClose();
     }
   };
   return (
