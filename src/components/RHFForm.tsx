@@ -1,3 +1,4 @@
+'use client';
 import InputField from './InputField';
 import Button from './Button';
 import { useForm } from 'react-hook-form';
@@ -5,8 +6,8 @@ import { userFormSchema } from '../validation/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { countries } from '../const/const';
-import { formStore } from '../store/formStore.ts';
-import { fileToBase64 } from '../services/converterToBase64.ts';
+import { formStore } from '../store/formStore';
+import { fileToBase64 } from '../services/converterToBase64';
 
 export type userFormSchemaData = z.infer<typeof userFormSchema>;
 function RHFForm({ onClose }: { onClose: () => void }) {

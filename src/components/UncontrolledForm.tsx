@@ -1,11 +1,12 @@
+'use client';
 import Button from './Button';
 import React, { useRef, useState } from 'react';
 import { userFormSchema } from '../validation/schema';
 import InputField from './InputField';
 import { countries } from '../const/const';
-import { fileToBase64 } from '../services/converterToBase64.ts';
-import { formStore } from '../store/formStore.ts';
-import type { FormData } from '../store/formStore.ts';
+import { fileToBase64 } from '../services/converterToBase64';
+import { formStore } from '../store/formStore';
+import type { FormData } from '../store/formStore';
 
 function UncontrolledForm({ onClose }: { onClose: () => void }) {
   const formRef = useRef<HTMLFormElement>(null);

@@ -1,4 +1,4 @@
-import type { Response } from '../pages/page/[pageNumber].tsx';
+import type { Response } from '../pages/page/[pageNumber]';
 import { LIMIT } from '../const/const';
 
 export async function getBooks(

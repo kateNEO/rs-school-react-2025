@@ -1,4 +1,4 @@
-import type { BooksCard } from '../pages/page/[pageNumber].tsx';
+import type { BooksCard } from '../pages/page/[pageNumber]';
 import { store } from '../store/store';
 import { useEffect, useState } from 'react';
 

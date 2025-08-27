@@ -1,6 +1,6 @@
 'use client';
 import { getBooks } from '../services/getBooks';
-import type { Response } from '../pages/page/[pageNumber].tsx';
+import type { Response } from '../pages/page/[pageNumber]';
 import { useQuery, type UseQueryResult } from '@tanstack/react-query';
 
 export const useBooks = (

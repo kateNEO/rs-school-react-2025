@@ -1,10 +1,11 @@
+'use client';
 import Button from '../../components/Button';
 import { ModalWrapper } from '../../components/ModalWrapper';
 import UncontrolledForm from '../../components/UncontrolledForm';
 import RHFForm from '../../components/RHFForm';
 import { useState } from 'react';
-import FormCard from '../../components/FormCard.tsx';
-import { formStore } from '../../store/formStore.ts';
+import FormCard from '../../components/FormCard';
+import { formStore } from '../../store/formStore';
 
 function Forms() {
   const [isUncontrolledOpen, setUncontrolledOpen] = useState(false);

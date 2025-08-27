@@ -1,6 +1,6 @@
 import { create } from 'zustand/react';
 
-import type { BooksCard } from '../pages/page/[pageNumber].tsx';
+import type { BooksCard } from '../pages/page/[pageNumber]';
 export type SelectedCardsStore = {
   selectedIdList: BooksCard[];
   toggleItem: (book: BooksCard) => void;

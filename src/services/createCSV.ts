@@ -1,4 +1,4 @@
-import type { BooksCard } from '../pages/page/[pageNumber].tsx';
+import type { BooksCard } from '../pages/page/[pageNumber]';
 
 export function createCSV(selectedBooks: BooksCard[]) {
   const rows = selectedBooks.map((book) => [
