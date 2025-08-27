@@ -3,28 +3,41 @@ import React, { useRef, useState } from 'react';
 import { userFormSchema } from '../validation/schema';
 import InputField from './InputField';
 import { countries } from '../const/const';
+import { fileToBase64 } from '../services/converterToBase64.ts';
+import { formStore } from '../store/formStore.ts';
+import type { FormData } from '../store/formStore.ts';
 
 function UncontrolledForm() {
   const formRef = useRef<HTMLFormElement>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formRef.current) return;
     const formData = new FormData(formRef.current);
+    const genderValue = formData.get('gender');
+    let gender: 'male' | 'female';
+    if (genderValue === 'male') {
+      gender = 'male';
+    } else if (genderValue === 'female') {
+      gender = 'female';
+    } else {
+      gender = 'male';
+    }
+    const fileInput = formRef.current?.elements.namedItem(
+      'picture'
+    ) as HTMLInputElement;
     const data = {
-      name: formData.get('name'),
+      name: String(formData.get('name')),
       age: Number(formData.get('age')),
-      email: formData.get('email'),
+      email: String(formData.get('email')),
       password: {
         password: String(formData.get('password')),
         confirmPassword: String(formData.get('confirmPassword')),
       },
-      confirmPassword: String(formData.get('confirmPassword') || ''),
-      gender: formData.get('gender'),
+      country: String(formData.get('country')),
+      gender,
       acceptTerms: formData.get('acceptTerms') === 'on',
-      picture: {
-        file: formData.get('picture') as File,
-      },
+      picture: fileInput?.files,
     };
     const result = userFormSchema.safeParse(data);
     if (!result.success) {
@@ -38,8 +51,15 @@ function UncontrolledForm() {
           fieldErrors[key] = err.message;
         }
       });
-      console.log(fieldErrors);
       setErrors(fieldErrors);
+    } else {
+      console.log(data);
+      let pictureBase64 = '';
+      if (data.picture && data.picture.length > 0) {
+        pictureBase64 = await fileToBase64(data.picture[0]);
+      }
+      const formattedData: FormData = { ...data, picture: pictureBase64 };
+      formStore.getState().setData(formattedData);
     }
   };
   return (
@@ -49,9 +69,6 @@ function UncontrolledForm() {
       onSubmit={handleSubmit}
     >
       <InputField label="Name" type="text" name="name" placeholder="name" />
-      {errors.name && (
-        <p className="h-5 text-red-500 text-[12px]">{errors.name}</p>
-      )}
       {errors.name && (
         <p className="h-5 text-red-500 text-[12px]">{errors.name}</p>
       )}
@@ -83,19 +100,27 @@ function UncontrolledForm() {
         placeholder="password..."
         name="confirmPassword"
       />
-      {errors.password && (
+      {errors.confirmPassword && (
         <p className="h-5 text-red-500 text-[12px]">{errors.confirmPassword}</p>
       )}
       <div>
         <label className="text-left text-sm leading-6 text-[#545454]">
           Gender
         </label>
-        <select className="border border-[#9F9F9F] w-full h-10 rounded-[7px] hover:cursor-pointer">
+        <select
+          className="border border-[#9F9F9F] w-full h-10 rounded-[7px] hover:cursor-pointer"
+          name="gender"
+        >
           <option>male</option>
           <option>female</option>
         </select>
       </div>
-      <InputField type="text" label="Country" autoCompleteList={countries} />
+      <InputField
+        type="text"
+        label="Country"
+        name="country"
+        autoCompleteList={countries}
+      />
       {errors.country && (
         <p className="h-5 text-red-500 text-[12px]">{errors.country}</p>
       )}
@@ -112,6 +137,7 @@ function UncontrolledForm() {
         type="file"
         label="Upload Picture"
         accept="image/png, image/jpeg"
+        name="picture"
       />
       {errors.picture && (
         <p className="h-5 text-red-500 text-[12px]">{errors.picture}</p>

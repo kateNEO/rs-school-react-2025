@@ -5,6 +5,8 @@ import { userFormSchema } from '../validation/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { countries } from '../const/const';
+import { formStore } from '../store/formStore.ts';
+import { fileToBase64 } from '../services/converterToBase64.ts';
 
 export type userFormSchemaData = z.infer<typeof userFormSchema>;
 function RHFForm() {
@@ -17,8 +19,18 @@ function RHFForm() {
     mode: 'onChange',
     resolver: zodResolver(userFormSchema),
   });
-  console.log(getValues());
-  const submitHandler = () => {};
+  const submitHandler = async () => {
+    if (isValid) {
+      const formData = getValues();
+      let pictureBase64 = '';
+      if (formData.picture && formData.picture.length > 0) {
+        pictureBase64 = await fileToBase64(formData.picture[0]);
+      }
+      const formattedData = { ...formData, picture: pictureBase64 };
+      console.log(formattedData);
+      formStore.getState().setData(formattedData);
+    }
+  };
   return (
     <form
       onSubmit={handleSubmit(submitHandler)}

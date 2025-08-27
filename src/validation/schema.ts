@@ -59,7 +59,6 @@ export const userFormSchema = z.object({
     .custom<FileList>((val) => val instanceof FileList && val.length > 0, {
       message: 'File is required',
     })
-    .refine((fileList) => fileList.length > 0, 'File is required')
     .refine((files) => files[0]?.size <= 5 * 1024 * 1024, {
       message: 'File must be smaller than 5MB',
     })
