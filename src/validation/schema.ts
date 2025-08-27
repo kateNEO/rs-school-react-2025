@@ -3,21 +3,8 @@ import { countries } from '../const/const';
 
 const firstUppercaseLetter = /^[A-Z].*$/;
 
-export const userFormSchema = z
+const passwordSchema = z
   .object({
-    name: z
-      .string()
-      .min(1, { message: 'Name is required' })
-      .regex(firstUppercaseLetter, {
-        message: 'First letter must be uppercase',
-      }),
-
-    age: z
-      .number({ message: 'Value should be number' })
-      .min(1, { message: 'Age cannot be negative or 0' }),
-
-    email: z.email('Invalid email address'),
-
     password: z
       .string()
       .min(8, { message: 'Password must contain at least 8 characters' })
@@ -37,34 +24,48 @@ export const userFormSchema = z
         message: 'Password must contain at least one special symbol',
       }),
 
-    confirmPassword: z.string(),
+    confirmPassword: z
+      .string()
+      .min(1, { message: 'You must confirm password' }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Passwords must match',
+    path: ['confirmPassword'],
+  });
 
-    gender: z.enum(['male', 'female'], 'Please select gender'),
-
-    acceptTerms: z.boolean().refine((val) => val === true, {
-      message: 'You must accept the Terms and Conditions',
+export const userFormSchema = z.object({
+  name: z
+    .string()
+    .min(1, { message: 'Name is required' })
+    .regex(firstUppercaseLetter, {
+      message: 'First letter must be uppercase',
     }),
 
-    picture: z
-      .custom<FileList>((val) => val instanceof FileList && val.length > 0, {
-        message: 'File is required',
-      })
-      .refine((fileList) => fileList.length > 0, 'File is required')
-      .refine((files) => files[0]?.size <= 5 * 1024 * 1024, {
-        message: 'File must be smaller than 5MB',
-      })
-      .refine((files) => ['image/png', 'image/jpeg'].includes(files[0]?.type), {
-        message: 'Only PNG or JPEG files are allowed',
-      }),
+  age: z
+    .number({ message: 'Value should be number' })
+    .min(1, { message: 'Age cannot be negative or 0' }),
 
-    country: z.enum(countries, 'Please select country'),
-  })
-  .superRefine((data, ctx) => {
-    if (data.password !== data.confirmPassword) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'Passwords must match',
-        path: ['confirmPassword'],
-      });
-    }
-  });
+  email: z.email('Invalid email address'),
+
+  password: passwordSchema,
+
+  gender: z.enum(['male', 'female'], 'Please select gender'),
+
+  acceptTerms: z.boolean().refine((val) => val === true, {
+    message: 'You must accept the Terms and Conditions',
+  }),
+
+  picture: z
+    .custom<FileList>((val) => val instanceof FileList && val.length > 0, {
+      message: 'File is required',
+    })
+    .refine((fileList) => fileList.length > 0, 'File is required')
+    .refine((files) => files[0]?.size <= 5 * 1024 * 1024, {
+      message: 'File must be smaller than 5MB',
+    })
+    .refine((files) => ['image/png', 'image/jpeg'].includes(files[0]?.type), {
+      message: 'Only PNG or JPEG files are allowed',
+    }),
+
+  country: z.enum(countries, 'Please select country'),
+});

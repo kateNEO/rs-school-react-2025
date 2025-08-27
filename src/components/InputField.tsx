@@ -1,5 +1,6 @@
-type InputFieldProps = {
-  name?: string;
+import React from 'react';
+
+type InputFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
   label: string;
   type: string;
   placeholder?: string;
@@ -12,7 +13,6 @@ function InputField({
   type,
   placeholder,
   autoCompleteList,
-  name,
   ...props
 }: InputFieldProps) {
   const countryListId = 'countries-list';
@@ -23,7 +23,6 @@ function InputField({
       </label>
       <div className="relative w-full">
         <input
-          name={name}
           type={type}
           className="border border-[#9F9F9F] w-full h-8 rounded-[7px] p-2 hover:cursor-pointer"
           placeholder={placeholder}

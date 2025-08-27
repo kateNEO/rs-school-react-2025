@@ -1,5 +1,5 @@
 import Button from './Button';
-import { useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { userFormSchema } from '../validation/schema';
 import InputField from './InputField';
 import { countries } from '../const/const';
@@ -11,12 +11,14 @@ function UncontrolledForm() {
     e.preventDefault();
     if (!formRef.current) return;
     const formData = new FormData(formRef.current);
-    console.log(formData.get('confirmPassword'));
     const data = {
       name: formData.get('name'),
       age: Number(formData.get('age')),
       email: formData.get('email'),
-      password: String(formData.get('password') || ''),
+      password: {
+        password: String(formData.get('password')),
+        confirmPassword: String(formData.get('confirmPassword')),
+      },
       confirmPassword: String(formData.get('confirmPassword') || ''),
       gender: formData.get('gender'),
       acceptTerms: formData.get('acceptTerms') === 'on',
@@ -24,14 +26,16 @@ function UncontrolledForm() {
         file: formData.get('picture') as File,
       },
     };
-    console.log(formData.get('password'), formData.get('confirmPassword'));
     const result = userFormSchema.safeParse(data);
     if (!result.success) {
       const fieldErrors: Record<string, string> = {};
-
       result.error.issues.forEach((err) => {
-        if (err.path.length) {
-          fieldErrors[err.path[0].toString()] = err.message;
+        if (err.path[0] === 'password' && err.path.length > 1) {
+          const key = err.path[err.path.length - 1].toString();
+          fieldErrors[key] = err.message;
+        } else {
+          const key = err.path[0]?.toString() || 'form';
+          fieldErrors[key] = err.message;
         }
       });
       console.log(fieldErrors);
@@ -79,7 +83,7 @@ function UncontrolledForm() {
         placeholder="password..."
         name="confirmPassword"
       />
-      {errors.confirmPassword && (
+      {errors.password && (
         <p className="h-5 text-red-500 text-[12px]">{errors.confirmPassword}</p>
       )}
       <div>

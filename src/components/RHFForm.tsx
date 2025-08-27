@@ -11,11 +11,13 @@ function RHFForm() {
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors, isValid },
   } = useForm<userFormSchemaData>({
     mode: 'onChange',
     resolver: zodResolver(userFormSchema),
   });
+  console.log(getValues());
   const submitHandler = () => {};
   return (
     <form
@@ -50,25 +52,25 @@ function RHFForm() {
         <p className="h-5 text-red-500 text-[12px]">{errors.email.message}</p>
       )}
       <InputField
-        {...register('password')}
+        {...register('password.password')}
         label="Password"
         type="password"
         placeholder="password..."
       />
-      {errors.password && (
+      {errors.password?.password && (
         <p className="h-5 text-red-500 text-[12px]">
-          {errors.password.message}
+          {errors.password.password.message}
         </p>
       )}
       <InputField
-        {...register('confirmPassword')}
+        {...register('password.confirmPassword')}
         label="Repeat password"
         type="password"
         placeholder="password..."
       />
-      {errors.confirmPassword && (
+      {errors.password?.confirmPassword && (
         <p className="h-5 text-red-500 text-[12px]">
-          {errors.confirmPassword.message}
+          {errors.password.confirmPassword.message}
         </p>
       )}
       <label className="text-left text-sm leading-8 text-[#545454]">

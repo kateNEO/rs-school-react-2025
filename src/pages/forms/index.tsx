@@ -8,7 +8,7 @@ function Forms() {
   const [isUncontrolledOpen, setUncontrolledOpen] = useState(false);
   const [isRHFOpen, setRHFOpen] = useState(false);
   return (
-    <>
+    <div className="flex align-center justify-center mt-50 gap-10">
       <Button
         text="uncontrolled"
         type="button"
@@ -24,7 +24,7 @@ function Forms() {
       <ModalWrapper isOpen={isRHFOpen} onClose={() => setRHFOpen(false)}>
         <RHFForm />
       </ModalWrapper>
-    </>
+    </div>
   );
 }
 
