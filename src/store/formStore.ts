@@ -9,27 +9,20 @@ export type FormData = {
     confirmPassword: string;
   };
   gender: 'male' | 'female';
+  country: string;
   picture: string;
 };
 type FormStore = {
-  savedData: FormData;
+  savedData: FormData[];
   setData: (data: FormData) => void;
-  getData: () => FormData;
+  getData: () => FormData[];
 };
 export const formStore = createStore<FormStore>((set, get) => ({
-  savedData: {
-    name: '',
-    age: 0,
-    email: '',
-    password: {
-      password: '',
-      confirmPassword: '',
-    },
-    gender: 'male',
-    picture: '',
-  },
+  savedData: [],
   setData: (data) => {
-    set({ savedData: data });
+    set((state) => ({
+      savedData: [...state.savedData, data],
+    }));
     console.log(get().savedData);
   },
   getData: () => get().savedData,
